@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Sand
+  m_Shader: {fileID: 4800000, guid: ea11772b4360b1040ac6af6e895c321c, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _HeightMap:
+        m_Texture: {fileID: 2800000, guid: 31d4a243cba3876488915721f156a362, type: 3}
+        m_Scale: {x: 5, y: 5}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 672b84efe9e551742880b78a8c45c93e, type: 3}
+        m_Scale: {x: 5, y: 5}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _HeightMapIntensity: 0.1
+    - _OndulationInnerWidth: 0.2
+    - _OndulationMaxHeight: 0.5
+    - _OndulationMinHeight: 0
+    - _OndulationOuterWidth: 0.4
+    - _Tesselation: 3
+    - _TrackedEntityMaxVelocity: 2
+    - _TrackedEntityPercentUndergroud: 0.90716565
+    - _TrackedEntityRadius: 0.5
+    - _TrackedEntityVelocityContribution: 1
+    - _UndulationInnerWidth: 0.1
+    - _UndulationMaxHeight: 0.3
+    - _UndulationMinHeight: 0
+    - _UndulationOuterWidth: 0.25
+    m_Colors:
+    - _TrackedEntityPosition: {r: -1.1350168, g: 0.84429187, b: 1.106004, a: 0}
+    - _TrackedEntityVelocity: {r: -2.9305794, g: 0.5438061, b: 1.2615057, a: 0}

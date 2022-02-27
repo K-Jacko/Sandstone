@@ -1,0 +1,160 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-1329538935490528918
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: M_EventSpaceSkybox_01
+  m_Shader: {fileID: 4800000, guid: 6769ef6db5c465b4489498e5b498db14, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RBokeh01GBokeh02BNoise:
+        m_Texture: {fileID: 2800000, guid: 4dcfa42a67e8925469b6a55fbb3a5ff7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RBokeh01GBokeh02BNoiseAMask:
+        m_Texture: {fileID: 2800000, guid: 4dcfa42a67e8925469b6a55fbb3a5ff7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RBokeh01GBokeh02BStarsANoise:
+        m_Texture: {fileID: 2800000, guid: 3c0468ef64dfca84e8aaf4f35881532a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RBokehGBokehBNoise:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RGBBaseColour:
+        m_Texture: {fileID: 2800000, guid: e3d0741c4fa51ef4599a0e16cc958ec6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RStars:
+        m_Texture: {fileID: 2800000, guid: 8ead5cfc6a5e9cc438e09435e261c04d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample5:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord2:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord3:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _AlphaClip: 0
+    - _AlphaCutoff: 0.5
+    - _Blend: 0
+    - _Bokeh01Multiply: 0.9
+    - _Bokeh01Opacity: 0.7
+    - _Bokeh01ParallaxScale: 0.4
+    - _Bokeh02Multiply: 0.25
+    - _Bokeh02Opacity: 0.4
+    - _Bokeh02ParallaxScale: 0.65
+    - _BumpScale: 1
+    - _Cull: 2
+    - _Cutoff: 0.5
+    - _DstBlend: 0
+    - _EnvironmentReflections: 1
+    - _GlossMapScale: 0
+    - _Glossiness: 0
+    - _GlossyReflections: 0
+    - _Metallic: 0
+    - _NoiseMultiply: 1
+    - _OcclusionStrength: 1
+    - _Parallax: 0.8
+    - _QueueOffset: 0
+    - _ReceiveShadows: 1
+    - _RefPlane: 0
+    - _Smoothness: 0.5
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _StarsParallaxScale: 0.9
+    - _Surface: 0
+    - _TessEdgeLength: 16
+    - _TessMax: 25
+    - _TessMaxDisp: 25
+    - _TessMin: 10
+    - _TessPhongStrength: 0.5
+    - _TessValue: 16
+    - _WorkflowMode: 1
+    - _ZWrite: 1
+    m_Colors:
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColourPanningX: {r: 0.002, g: 0, b: 0, a: 0}
+    - _BaseColourSpeedXY: {r: 0.05, g: 0, b: 0, a: 0}
+    - _BaseColourTilingXY: {r: 1, g: 1, b: 0, a: 0}
+    - _Bokeh01SpeedXY: {r: 0.0015, g: -0.012, b: 0, a: 0}
+    - _Bokeh01TilingXY: {r: 12, g: 7, b: 0, a: 0}
+    - _Bokeh02SpeedXY: {r: -0.012, g: 0.0075, b: 0, a: 0}
+    - _Bokeh02TilingXY: {r: 7, g: 4, b: 0, a: 0}
+    - _BokehColour: {r: 0.74158955, g: 0.74158955, b: 0.9528302, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _NoiseSpeedXY: {r: 0.045, g: 0.03, b: 0, a: 0}
+    - _NoiseTilingXY: {r: 6, g: 4, b: 0, a: 0}
+    - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+    - _StarsSpeedXY: {r: 0.005, g: 0.005, b: 0, a: 0}
+    - _StarsTilingXY: {r: 20, g: 12, b: 0, a: 0}
+    - _Vector0: {r: 0, g: 0, b: -0.65, a: 0}
+  m_BuildTextureStacks: []

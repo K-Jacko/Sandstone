@@ -1,0 +1,33 @@
+{
+    "name": "WinCintrols",
+    "maps": [
+        {
+            "name": "Player",
+            "id": "8cd9ec0e-ad3a-4921-81e8-2155c11a1088",
+            "actions": [
+                {
+                    "name": "Generate",
+                    "type": "Button",
+                    "id": "2b493b21-091d-42f6-9c0e-6fb3ad8aa662",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "26b48db9-56ba-4d11-bf1c-c959c7b00341",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Generate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
