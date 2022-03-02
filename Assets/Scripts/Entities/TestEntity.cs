@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class TestEntity : MonoBehaviour
+public class TestEntity : Monster
 {
     private StateMachine _stateMachine;
     public int tempBool = 3;
@@ -16,13 +16,14 @@ public class TestEntity : MonoBehaviour
     void Awake()
     {
         tempBool = 3;
-        TEMaterial = gameObject.GetComponent<MeshRenderer>().sharedMaterial;
+        GameObject o;
+        TEMaterial = (o = gameObject).GetComponent<MeshRenderer>().sharedMaterial;
         _stateMachine = new StateMachine();
-        
 
-        var enterColor = new OriginColor(this);
-        var exitColor = new NewColor(this);
-        var idleColor = new IdleColor(this);
+
+        var enterColor = new Attack(this,TEMaterial,o);
+        var exitColor = new Cooldown(this,TEMaterial,o);
+        var idleColor = new Idle(this,TEMaterial,o);
         
         At(idleColor, enterColor, CloseToTarget());
         _stateMachine.AddAnyTransition(enterColor, () => tempBool == 0);
@@ -39,16 +40,7 @@ public class TestEntity : MonoBehaviour
 
 
     }
-
-    public IEnumerator Leaving()
-    {
-        leaving = true;
-        yield return new WaitForSeconds(3);
-        tempBool = 3;
-        leaving = false;
-    }
-
-
+    
     private void Update() => _stateMachine.Tick();
 
     public void OnTriggerEnter(Collider collider)
@@ -59,5 +51,15 @@ public class TestEntity : MonoBehaviour
     public void OnTriggerExit(Collider collider)
     {
         tempBool = 1;
+        if(!leaving)
+            StartCoroutine(Leaving());
+    }
+    
+    private IEnumerator Leaving()
+    {
+        leaving = true;
+        yield return new WaitForSeconds(3);
+        tempBool = 3;
+        leaving = false;
     }
 }
