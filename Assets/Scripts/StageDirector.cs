@@ -13,6 +13,23 @@ public class StageDirector : MonoBehaviour
         return Player;
     }
 
+    List<GemElement> GetValidElements()
+    {
+        //Validate all elements against the coEfficient 
+        return new List<GemElement>
+        {
+            new Inferno(),
+            new Terra(),
+            new Aqua()
+        };
+    }
+
+    public GemElement GetTopWeightedElement()
+    {
+        var rndInt = Random.Range(0, 3);
+        return GetValidElements()[rndInt];
+    }
+
     // Update is called once per frame
     void Update()
     {
