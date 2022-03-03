@@ -14,6 +14,8 @@ public class Firefly : Monster
     public float radiusSpeed = 0.5f;
     public float maxHeight;
     public float shootInterval = 1f;
+    public float projectileSpeed;
+    public GameObject projectile;
 
     private GemElement _gemElement;
     private StateMachine _stateMachine;
@@ -30,7 +32,7 @@ public class Firefly : Monster
         monster = gameObject;
         spawnPoint = transform.position;
         _floor = LayerMask.GetMask("Floor");
-        _spawnerMaterial = GetComponent<MeshRenderer>().material;
+        _spawnerMaterial = GetComponentsInChildren<MeshRenderer>()[1].material;
         _stateMachine = new StateMachine();
         _stageDirector = FindObjectOfType<StageDirector>();
         _gemElement = _stageDirector.GetTopWeightedElement();
@@ -109,7 +111,13 @@ public class Firefly : Monster
 
     IEnumerator Shoot()
     {
+        _shooting = true;
         yield return new WaitForSeconds(shootInterval);
+        var go = Instantiate(projectile, gameObject.transform.position, Quaternion.identity);
+        
+        go.GetComponent<Rigidbody>().velocity =
+            (player.transform.position - transform.position).normalized * projectileSpeed;
+         
         _shooting = false;
     }
     float GetDistanceFromFloor()
