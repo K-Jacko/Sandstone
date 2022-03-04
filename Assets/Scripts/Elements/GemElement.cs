@@ -6,5 +6,8 @@ public interface GemElement
 {
     void Mutate();
 
-    int GetElement();
+    int GetElement()
+    {
+        return Random.Range(0, 4);
+    }
 }

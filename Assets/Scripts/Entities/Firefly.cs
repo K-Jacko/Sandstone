@@ -7,7 +7,6 @@ using Random = UnityEngine.Random;
 
 public class Firefly : Monster
 {
-    public int GemType;
     public float explosionRadius;
     public float rotationSpeed = 80.0f;
     public float radius = 2.0f;
@@ -16,8 +15,7 @@ public class Firefly : Monster
     public float shootInterval = 1f;
     public float projectileSpeed;
     public GameObject projectile;
-
-    private GemElement _gemElement;
+    
     private StateMachine _stateMachine;
     private Material _spawnerMaterial;
     private LayerMask _floor;
@@ -28,15 +26,15 @@ public class Firefly : Monster
     // Start is called before the first frame update
     void Awake()
     {
-        player = StageDirector.GetPlayer();
+
+        player = StageDirector.Instance.Player;
         monster = gameObject;
         spawnPoint = transform.position;
         _floor = LayerMask.GetMask("Floor");
-        _spawnerMaterial = GetComponentsInChildren<MeshRenderer>()[1].material;
+        _spawnerMaterial = gameObject.GetComponent<MeshRenderer>().material;
         _stateMachine = new StateMachine();
         _stageDirector = FindObjectOfType<StageDirector>();
-        _gemElement = _stageDirector.GetTopWeightedElement();
-        GemType = _gemElement.GetElement();
+        
         InitAttackStates();
         
 
@@ -87,12 +85,12 @@ public class Firefly : Monster
         var position = player.transform.position;
         transform.RotateAround (position, Vector3.up, rotationSpeed * Time.deltaTime);
         Vector3  desiredPosition;
-        if (_gemElement.GetElement() == 1)
+        if (GemElement.GetElement() == 1)
         {
             //Above Head
             desiredPosition = (transform.position - position).normalized * -radius + position  ;
         }
-        else if(_gemElement.GetElement() == 2)
+        else if(GemElement.GetElement() == 0)
         {
             //Rotate Around
             desiredPosition = ((transform.position - position).normalized * radius + position) * Mathf.Sin(1); 
@@ -102,7 +100,7 @@ public class Firefly : Monster
             //Weird Away Above
             desiredPosition = Vector3.zero;
         }
-
+        
         var distanceFromFloor = GetDistanceFromFloor();
         var warp = new Vector3(desiredPosition.x, distanceFromFloor, desiredPosition.z);
         transform.position = Vector3.MoveTowards(transform.position, warp, Time.deltaTime * radiusSpeed);

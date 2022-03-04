@@ -151,7 +151,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1684191017}
   m_Father: {fileID: 2124326638}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -167,6 +168,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca8680f1ded609f43b2e7e335865c518, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wallet: 0
+  time: 0
+  stageSeed: 0
+  mobs:
+  - {fileID: 5283921981542637009, guid: 0bab58fb60cf9e64c82433bffa3c18fe, type: 3}
 --- !u!1 &591014405
 GameObject:
   m_ObjectHideFlags: 0
@@ -885,6 +891,54 @@ Transform:
   m_Father: {fileID: 1786793098}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1684191016
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1684191017}
+  - component: {fileID: 1684191018}
+  m_Layer: 0
+  m_Name: CombatDirectorTest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1684191017
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1684191016}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 585687205}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1684191018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1684191016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd26d6e1fc2a2e04a854ac90327aa1ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wallet: 100
+  spawnInterval: 4
+  elapsedTime: 0
+  spawnRadius: 20
 --- !u!1 &1786793097
 GameObject:
   m_ObjectHideFlags: 0
@@ -1012,8 +1066,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1801908178}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.84, y: -3.63, z: 8.01}
-  m_LocalScale: {x: 18.219, y: 9.623186, z: 4.792}
+  m_LocalPosition: {x: 9.84, y: 0.12, z: 8.01}
+  m_LocalScale: {x: 18.219, y: 4.0270147, z: 4.792}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1786793098}
