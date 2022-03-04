@@ -165,14 +165,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 585687204}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca8680f1ded609f43b2e7e335865c518, type: 3}
+  m_Script: {fileID: 11500000, guid: d0559dbf0fe607e4aa3f37d53080766d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   wallet: 0
-  time: 0
-  stageSeed: 0
-  mobs:
-  - {fileID: 5283921981542637009, guid: 0bab58fb60cf9e64c82433bffa3c18fe, type: 3}
+  monsters: []
+  creditMultiplier: 0
+  coEef: 0
 --- !u!1 &591014405
 GameObject:
   m_ObjectHideFlags: 0
@@ -697,6 +696,50 @@ Transform:
   m_Father: {fileID: 1786793098}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1518100872
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1518100873}
+  - component: {fileID: 1518100874}
+  m_Layer: 0
+  m_Name: TimeManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1518100873
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1518100872}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2124326638}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1518100874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1518100872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7674f42df9d3dce4c92b4429a50f339c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1579034390
 GameObject:
   m_ObjectHideFlags: 0
@@ -932,13 +975,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1684191016}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd26d6e1fc2a2e04a854ac90327aa1ed, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ce5537f136ddd44ea60217742fec4d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   wallet: 100
-  spawnInterval: 4
-  elapsedTime: 0
-  spawnRadius: 20
+  monsters: []
+  creditMultiplier: 5
+  coEef: 1
+  spawnRadius: 5
 --- !u!1 &1786793097
 GameObject:
   m_ObjectHideFlags: 0
@@ -1215,6 +1259,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 585687205}
+  - {fileID: 1518100873}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

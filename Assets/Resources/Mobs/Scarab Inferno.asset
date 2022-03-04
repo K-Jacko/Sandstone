@@ -17,4 +17,4 @@ MonoBehaviour:
   creditCost: 40
   weight: 2
   health: 20
-  mobMaterial: {fileID: 2100000, guid: 471bc5b50bd0017419db360f8126fa64, type: 2}
+  mobMaterial: {fileID: 2100000, guid: 7dce23e36ddefe64f8705767edaf711a, type: 2}
