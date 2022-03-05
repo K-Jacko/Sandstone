@@ -5,12 +5,14 @@ using UnityEngine;
 
 public class Monster : MonoBehaviour
 {
+    public float health;
     public Vector3 spawnPoint;
     public float spawnRadius;
     public float combatRadius;
     public GameObject player;
     public GameObject monster;
     public float speed;
+    public GemElement GemElement;
 
     public virtual void Attack()
     {
