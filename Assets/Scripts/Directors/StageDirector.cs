@@ -17,11 +17,12 @@ public class StageDirector : Director
         LoadMonsters();
         //Collect directors better
         combatDirectors = FindObjectsOfType<Director>();
+        //baseGrid = new Grid(100,100,50,Color.green);
         foreach (var combatDirector in combatDirectors)
         {
             combatDirector.Init();
         }
-
+        
     }
     
     // Update is called once per frame

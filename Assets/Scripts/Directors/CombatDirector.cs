@@ -1,10 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class CombatDirector : Director
 {
     public float spawnRadius = 5f;
+    public GameObject mobSpawner;
+    public int gridWidth = 5;
+    public int gridHeight = 5;
+    public float cellSize = 100;
     private MobCard[] _validMobs;
     private GameObject _player;
 
@@ -12,14 +18,18 @@ public class CombatDirector : Director
     {
         _validMobs = ValidateMobCards(StageDirector.Instance.monsters);
         _player = StageDirector.Instance.Player;
+        baseGrid = new Grid(gridWidth,gridHeight,cellSize,Color.red);
+        GenerateMobSpawners(baseGrid);
     }
 
     protected override void Tick()
     {
+        //This will spawn from the lowest priced and expend its wallet. Implement weights so harder enemies are prioritised with bigger wallets
         base.Tick();
-        foreach (var validMob in _validMobs)
+        for (var i = 0; i < _validMobs.Length; i++)
         {
-            if (wallet > validMob.creditCost)
+            var validMob = _validMobs[i];
+            if (wallet >= validMob.creditCost)
             {
                 wallet -= validMob.creditCost;
                 var go = Instantiate(validMob.entity,
@@ -31,9 +41,16 @@ public class CombatDirector : Director
                 goM.GemElement = validMob.GemElement;
                 goM.gameObject.GetComponent<MeshRenderer>().material = validMob.mobMaterial;
             }
+            else if (wallet > 0f)
+            {
+                i = -1;
+            }
+            else if (wallet == 0)
+            {
+                wallet += coEef * creditMultiplier;
+                break;
+            }
         }
-
-        wallet += coEef * creditMultiplier;
     }
     MobCard[] ValidateMobCards(MobCard[] mobCards)
     {
@@ -46,13 +63,17 @@ public class CombatDirector : Director
         return mobCards;
     }
 
-    void OnDrawGizmos()
+    void GenerateMobSpawners(Grid grid)
     {
-        if (_player == null)
+        this.baseGrid = grid;
+        for (int x = 0; x < baseGrid.GetWidth(); x++)
         {
-            Gizmos.color = new Color(1f, 1f, 1f, 0.2f);
-            var position = _player.transform.position;
-            Gizmos.DrawSphere(position, spawnRadius);
+            for (int y = 0; y < baseGrid.GetHeigth(); y++)
+            {
+                var startPositionX = (baseGrid.GetWidth() / -2);
+                var startPositionY = -baseGrid.GetHeigth() / 2;
+                Instantiate(mobSpawner,baseGrid.GetWorldPosition(startPositionX + x, startPositionY + y) + new Vector3(cellSize,0,cellSize) * .5f,Quaternion.identity);
+            }
         }
     }
 }
