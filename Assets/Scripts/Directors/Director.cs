@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Director : MonoBehaviour
@@ -9,7 +10,9 @@ public class Director : MonoBehaviour
     public MobCard[] monsters;
     public float creditMultiplier;
     public float coEef;
+    public Grid baseGrid;
 
+    private int testint = 0;
     private void Awake()
     {
         TimeManager.OnMinChanged += Tick;
@@ -24,6 +27,8 @@ public class Director : MonoBehaviour
     protected void LoadMonsters()
     {
         monsters = Resources.LoadAll<MobCard>("Mobs");
+        Array.Sort(monsters,
+            delegate(MobCard x, MobCard y) { return x.creditCost.CompareTo(y.creditCost); });
     }
 
     protected virtual void Tick()

@@ -7,13 +7,14 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     public float explosionRadius;
+    public static Action onHitPlayer;
     private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.layer == LayerMask.GetMask("Player"))
         {
-            other.gameObject.GetComponent<Player>().Health -= 1;
             gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
             Destroy(gameObject,2f);
+            onHitPlayer?.Invoke();
         }
         else
         {
