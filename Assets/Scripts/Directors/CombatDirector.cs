@@ -13,17 +13,19 @@ public class CombatDirector : Director
     public float cellSize = 100;
     private MobCard[] _validMobs;
     private GameObject _player;
+    private Grid<GridMapObject> baseGrid;
 
     public override void Init()
     {
         _validMobs = ValidateMobCards(StageDirector.Instance.monsters);
         _player = StageDirector.Instance.Player;
-        baseGrid = new Grid(gridWidth,gridHeight,cellSize,Color.red);
-        GenerateMobSpawners(baseGrid);
+        baseGrid = new Grid<GridMapObject>(gridWidth,gridHeight,cellSize,Vector3.zero, Color.red, (Grid<GridMapObject>g,int x,int y) => new GridMapObject());
+        //GenerateMobSpawners(baseGrid);
     }
 
     protected override void Tick()
     {
+        //This fires off event that all the spawners are subbed too. 
         //This will spawn from the lowest priced and expend its wallet. Implement weights so harder enemies are prioritised with bigger wallets
         base.Tick();
         for (var i = 0; i < _validMobs.Length; i++)
@@ -63,7 +65,7 @@ public class CombatDirector : Director
         return mobCards;
     }
 
-    void GenerateMobSpawners(Grid grid)
+    void GenerateMobSpawners(Grid<GridMapObject> grid)
     {
         this.baseGrid = grid;
         for (int x = 0; x < baseGrid.GetWidth(); x++)
@@ -75,5 +77,10 @@ public class CombatDirector : Director
                 Instantiate(mobSpawner,baseGrid.GetWorldPosition(startPositionX + x, startPositionY + y) + new Vector3(cellSize,0,cellSize) * .5f,Quaternion.identity);
             }
         }
+    }
+
+    public class GridMapObject
+    {
+        public int value;
     }
 }
