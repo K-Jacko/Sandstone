@@ -19,12 +19,12 @@ public class Grid<TGridObject>
     private Vector3 _originPosition;
     private TGridObject[,] gridArray;
 
-    public Grid(int width, int height, float cellSize, Vector3 originPosition, Color color, Func<Grid<TGridObject>, int, int, TGridObject> createGridObject)
+    public Grid(int width, int height, float cellSize, Vector3 originPosition, Color color, Func<Grid<TGridObject>, int, int, TGridObject> createGridObject,bool debugGrid)
     {
         this._width = width;
         this._height = height;
         this._cellSize = cellSize;
-        this._originPosition = originPosition - new Vector3(_width * _height / 2,0,_width * _height /2 );
+        this._originPosition = originPosition - new Vector3(_width * _cellSize / 2,0,_height * _cellSize /2 );
         gridArray = new TGridObject[width, height];
 
         for (int x = 0; x < gridArray.GetLength(0); x++)
@@ -39,15 +39,19 @@ public class Grid<TGridObject>
         {
             for (int y = 0; y < gridArray.GetLength(1); y++)
             {
-                var newXpos = (_width / -2);
-                var newYpos = -(_height / 2);
-                Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition( x,y + 1), color,100f);
-                Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x + 1,  y), color,100f);
+                if (debugGrid)
+                {
+                    Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition( x,y + 1), color,100f);
+                    Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x + 1,  y), color,100f); 
+                }
                 //Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x + 1, y), color,100f);
             }
         }
-        Debug.DrawLine(GetWorldPosition((int)originPosition.x,(int)originPosition.y + _height), GetWorldPosition((int)originPosition.x + _width, (int)originPosition.y + _height),Color.red,100f);
-        Debug.DrawLine(GetWorldPosition((int)originPosition.x + _width, (int)originPosition.y ), GetWorldPosition((int)originPosition.x + _width, (int)originPosition.y + _height),Color.red,100f);
+        //TODO : Draw outer Rim
+        // Debug.DrawLine(GetWorldPosition((int)originPosition.x,(int)originPosition.y + _height), GetWorldPosition((int)originPosition.x + _width, (int)originPosition.y + _height),Color.red,100f);
+        // Debug.DrawLine(GetWorldPosition((int)originPosition.x + _width, (int)originPosition.y ), GetWorldPosition((int)originPosition.x + _width, (int)originPosition.y + _height),Color.red,100f);
+        // Debug.DrawLine(GetWorldPosition((int)originPosition.x,(int)originPosition.y - _height) , GetWorldPosition((int)originPosition.x + _width, (int)originPosition.y ),Color.red,100f);
+        
     }
 
     public int GetWidth()
@@ -58,6 +62,15 @@ public class Grid<TGridObject>
     public int GetHeigth()
     {
         return _height;
+    }
+    
+    public float GetCellSize() {
+        return _cellSize;
+    }
+
+    public Vector3 GetOffset()
+    {
+        return _originPosition;
     }
     public Vector3 GetWorldPosition(int x, int y)
     {

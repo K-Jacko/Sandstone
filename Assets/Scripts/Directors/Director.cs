@@ -13,7 +13,7 @@ public class Director : MonoBehaviour
     public Grid baseGrid;
 
     private int testint = 0;
-    private void Awake()
+    public virtual void Awake()
     {
         TimeManager.OnMinChanged += Tick;
     }
@@ -35,7 +35,7 @@ public class Director : MonoBehaviour
     {
         print("tick");
         coEef += 1f;
-        
+
     }
     
     private void OnDisable()

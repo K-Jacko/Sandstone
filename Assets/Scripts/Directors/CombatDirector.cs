@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -7,20 +8,19 @@ using Random = UnityEngine.Random;
 public class CombatDirector : Director
 {
     public float spawnRadius = 5f;
-    public GameObject mobSpawner;
     public int gridWidth = 5;
     public int gridHeight = 5;
     public float cellSize = 100;
     private MobCard[] _validMobs;
     private GameObject _player;
-    private Grid<GridMapObject> baseGrid;
+    private List<GameObject> mobSpawners;
 
     public override void Init()
     {
         _validMobs = ValidateMobCards(StageDirector.Instance.monsters);
         _player = StageDirector.Instance.Player;
-        baseGrid = new Grid<GridMapObject>(gridWidth,gridHeight,cellSize,Vector3.zero, Color.red, (Grid<GridMapObject>g,int x,int y) => new GridMapObject());
         //GenerateMobSpawners(baseGrid);
+        mobSpawners = StageDirector.Instance.mobSpawners;
     }
 
     protected override void Tick()
@@ -53,6 +53,8 @@ public class CombatDirector : Director
                 break;
             }
         }
+        
+        
     }
     MobCard[] ValidateMobCards(MobCard[] mobCards)
     {
@@ -64,23 +66,5 @@ public class CombatDirector : Director
 
         return mobCards;
     }
-
-    void GenerateMobSpawners(Grid<GridMapObject> grid)
-    {
-        this.baseGrid = grid;
-        for (int x = 0; x < baseGrid.GetWidth(); x++)
-        {
-            for (int y = 0; y < baseGrid.GetHeigth(); y++)
-            {
-                var startPositionX = (baseGrid.GetWidth() / -2);
-                var startPositionY = -baseGrid.GetHeigth() / 2;
-                Instantiate(mobSpawner,baseGrid.GetWorldPosition(startPositionX + x, startPositionY + y) + new Vector3(cellSize,0,cellSize) * .5f,Quaternion.identity);
-            }
-        }
-    }
-
-    public class GridMapObject
-    {
-        public int value;
-    }
+    
 }
