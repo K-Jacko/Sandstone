@@ -35,7 +35,7 @@ public class CombatDirector : Director
             {
                 wallet -= validMob.creditCost;
                 var go = Instantiate(validMob.entity,
-                    _player.transform.position + new Vector3(Random.Range(-spawnRadius, spawnRadius),
+                    StageDirector.Instance.mobSpawners[0].transform.position + new Vector3(Random.Range(-spawnRadius, spawnRadius),
                         Random.Range(-spawnRadius, spawnRadius), Random.Range(-spawnRadius, spawnRadius)),
                     Quaternion.identity);
                 var goM = go.GetComponent<Monster>();

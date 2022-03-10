@@ -47,14 +47,14 @@ public class Firefly : Monster
         var explode = new Explode(this,_spawnerMaterial);
         
         At(idle, attack, FriendlyInRange());
-        At(attack, idle, FriendlyNotInRange());
+        //At(attack, idle, FriendlyNotInRange());
         _stateMachine.AddAnyTransition(explode, () =>
         {
             var distance = Vector3.Distance(monster.transform.position, player.transform.position);
             return distance <= explosionRadius;
         });
 
-        _stateMachine.SetState(idle);
+        _stateMachine.SetState(attack);
         
         void At(IState to, IState from, Func<bool> condition) => _stateMachine.AddTransition(to, from, condition);
 
@@ -64,11 +64,11 @@ public class Firefly : Monster
             return !(distance > spawnRadius);
         };
 
-        Func<bool> FriendlyNotInRange() => () =>
-        {
-            var distance = Vector3.Distance(monster.transform.position, player.transform.position);
-            return !(distance <= combatRadius);
-        };
+        // Func<bool> FriendlyNotInRange() => () =>
+                     // {
+                     //     var distance = Vector3.Distance(monster.transform.position, player.transform.position);
+                     //     return !(distance <= combatRadius);
+                     // };
     }
     
     private void Update() => _stateMachine.Tick();
@@ -111,7 +111,7 @@ public class Firefly : Monster
     {
         _shooting = true;
         yield return new WaitForSeconds(shootInterval);
-        var go = Instantiate(projectile, gameObject.transform.position, Quaternion.identity);
+        var go = Instantiate(projectile, gameObject.transform.position, Quaternion.identity, StageDirector.Instance.transform);
         
         go.GetComponent<Rigidbody>().velocity =
             (player.transform.position - transform.position).normalized * projectileSpeed;

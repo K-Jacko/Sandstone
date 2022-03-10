@@ -27,6 +27,7 @@ public class StageDirector : Director
         LoadMonsters();
         GenerateShrines(4);
         GeneratePaths(shrines);
+        Tick();
         //Collect directors better
         _combatDirectors = FindObjectsOfType<Director>();
         foreach (var combatDirector in _combatDirectors)
@@ -47,7 +48,6 @@ public class StageDirector : Director
             mobSpawners[0].SetActive(true);
         if(!mobSpawners[1].activeSelf)
             mobSpawners[1].SetActive(true);
-
     }
 
     void GenerateShrines(int noShrines)
@@ -58,7 +58,6 @@ public class StageDirector : Director
         {
             var go = Instantiate(shrine, origin + new Vector3(Random.Range(-spawnRadius, spawnRadius),100,Random.Range(-spawnRadius, spawnRadius)), Quaternion.identity);
             shrines[i] = go;
-
         }
     }
 
@@ -73,7 +72,7 @@ public class StageDirector : Director
             {
                 for (int j = 0; j < path.Count - 1; j++)
                 {
-                    Debug.DrawLine(path[j] +  _pathfinding.GetGrid().GetOffset() + new Vector3(0,100,0),path[j+1] +  _pathfinding.GetGrid().GetOffset() + new Vector3(0,100,0),Color.magenta, 100f);
+                    Debug.DrawLine(path[j] +  _pathfinding.GetGrid().GetOffset() + new Vector3(0,50,0),path[j+1] +  _pathfinding.GetGrid().GetOffset() + new Vector3(0,50,0),Color.red, 100f);
                     GenerateMobSpawners(path[j],path[j+1],_pathfinding);
                 }
             }
@@ -82,7 +81,7 @@ public class StageDirector : Director
     
     void GenerateMobSpawners(Vector3 a, Vector3 b, Pathfinding pathfinding)
     {
-        var go = Instantiate(mobSpawner,a  - new Vector3(pathfinding.GetGrid().GetCellSize(),mobSpawnerYOffset,pathfinding.GetGrid().GetCellSize()) * (gridSize / 2),Quaternion.identity);
+        var go = Instantiate(mobSpawner,a  - new Vector3(pathfinding.GetGrid().GetCellSize(),mobSpawnerYOffset,pathfinding.GetGrid().GetCellSize()) * (gridSize / 2),Quaternion.identity,gameObject.transform);
         mobSpawners.Add(go);
     }
     
