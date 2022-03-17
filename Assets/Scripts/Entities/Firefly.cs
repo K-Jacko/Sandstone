@@ -10,14 +10,11 @@ public class Firefly : Monster
     public float explosionRadius;
     public float rotationSpeed = 80.0f;
     public float radius = 2.0f;
-    public float radiusSpeed = 0.5f;
     public float maxHeight;
     public float shootInterval = 1f;
     public float projectileSpeed;
     public GameObject projectile;
     
-    private StateMachine _stateMachine;
-    private Material _spawnerMaterial;
     private LayerMask _floor;
 
     private bool _shooting;
@@ -25,62 +22,29 @@ public class Firefly : Monster
     // Start is called before the first frame update
     void Awake()
     {
-        traverseType = TraverseType.Air;
-        Spawn();
-        player = StageDirector.Instance.Player;
-        monster = gameObject;
-        _floor = LayerMask.GetMask("Floor");
-        _spawnerMaterial = gameObject.GetComponent<MeshRenderer>().material;
-        _stateMachine = new StateMachine();
-
-        InitAttackStates();
+        Init();
     }
 
-    public override void Spawn()
+    public override void Init()
     {
-        int layerMask = 1 << 6;
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position + new Vector3(0,1000,0), Vector3.down, out hit,10000, layerMask))
-        {
-            Debug.Log("HITTTT");
-            transform.position = hit.transform.position + new Vector3(0, 10, 0);
-        }
+        base.Init();
+        InitAttackStates();
+        traverseType = TraverseType.Air;
+        Spawn();
     }
 
     void InitAttackStates()
     {
-        var idle = new Idle(this,_spawnerMaterial,player);
-        var attack = new Attack(this,_spawnerMaterial,player);
-        var explode = new Explode(this,_spawnerMaterial);
+        var explode = new Explode(this,material);
         
-        At(idle, attack, FriendlyInRange());
-        At(attack, idle, FriendlyNotInRange());
-        _stateMachine.AddAnyTransition(explode, () =>
+        this._stateMachine.AddAnyTransition(explode, () =>
         {
             var distance = Vector3.Distance(monster.transform.position, player.transform.position);
             return distance <= explosionRadius;
         });
-
-        _stateMachine.SetState(attack);
-        
-        void At(IState to, IState from, Func<bool> condition) => _stateMachine.AddTransition(to, from, condition);
-
-        Func<bool> FriendlyInRange() => () =>
-        {
-            var distance = Vector3.Distance(monster.transform.position, player.transform.position);
-            return !(distance >= combatRadius);
-        };
-
-        Func<bool> FriendlyNotInRange() => () =>
-        {
-            var distance = Vector3.Distance(monster.transform.position, player.transform.position);
-            return !(distance < combatRadius);
-        };
     }
     
     private void Update() => _stateMachine.Tick();
-
-    
 
     void Move()
     {
@@ -93,19 +57,11 @@ public class Firefly : Monster
         
         var distanceFromFloor = GetDistanceFromFloor();
         var warp = new Vector3(desiredPosition.x, distanceFromFloor, desiredPosition.z);
-        transform.position = Vector3.MoveTowards(transform.position, warp, Time.deltaTime * radiusSpeed);
+        transform.position = Vector3.MoveTowards(transform.position, warp, Time.deltaTime * speed);
         transform.LookAt(player.transform);
     }
 
-    void MoveDirectly()
-    {
-        transform.position = Vector3.MoveTowards(transform.position, player.transform.position, Time.deltaTime * radiusSpeed);
-    }
-
-    public override void Idle()
-    {
-        MoveDirectly();
-    }
+    
     public override void Attack()
     {
         Move();
@@ -116,30 +72,25 @@ public class Firefly : Monster
     IEnumerator Shoot()
     {
         _shooting = true;
+        yield return new WaitForSeconds(shootInterval);
         var go = Instantiate(projectile, gameObject.transform.position, Quaternion.identity, StageDirector.Instance.transform);
         
         go.GetComponent<Rigidbody>().velocity =
             (player.transform.position - transform.position).normalized * projectileSpeed;
          
         _shooting = false;
-        yield return new WaitForSeconds(shootInterval);
+        
     }
     float GetDistanceFromFloor()
     {
-        if (Physics.Raycast(transform.position, Vector3.down, out var hit, 100f, 6))
+        int layerMask = 1 << 6;
+        if (Physics.Raycast(transform.position, Vector3.down, out var hit, 100f, layerMask))
         {
-            return hit.transform.position.y + maxHeight;
+            return hit.point.y + maxHeight;
         }
         return maxHeight;
         
     }
-    void OnDrawGizmos()
-    {
-        var position = gameObject.transform.position;
-        Gizmos.color = new Color(0.5f,1f,0.5f,0.1f);
-        Gizmos.DrawSphere(position, combatRadius);
-        Gizmos.color = new Color(0.1f,0.5f,0.5f,0.1f);
-        Gizmos.DrawSphere(position, explosionRadius);
-    }
+    
 }
 

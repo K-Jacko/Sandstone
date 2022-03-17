@@ -8,9 +8,10 @@ public class Projectile : MonoBehaviour
 {
     public float explosionRadius;
     public static Action onHitPlayer;
+    public bool showDebugs;
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.layer == LayerMask.GetMask("Player"))
+        if (other.gameObject.layer == 3)
         {
             gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
             Destroy(gameObject,2f);
@@ -25,8 +26,12 @@ public class Projectile : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = new Color(1f,0f,0f,0.8f);
-        var position = gameObject.transform.position;
-        Gizmos.DrawSphere(position, explosionRadius);
+        if (showDebugs)
+        {
+            Gizmos.color = new Color(1f,0f,0f,0.8f);
+            var position = gameObject.transform.position;
+            Gizmos.DrawSphere(position, explosionRadius);
+        }
+        
     }
 }

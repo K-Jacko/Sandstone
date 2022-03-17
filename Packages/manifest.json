@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.unity.ai.navigation": "1.0.0-exp.4",
     "com.unity.collab-proxy": "1.13.5",
     "com.unity.ide.rider": "3.0.7",
     "com.unity.ide.visualstudio": "2.0.11",
@@ -10,8 +11,8 @@
     "com.unity.timeline": "1.6.2",
     "com.unity.ugui": "1.0.0",
     "com.unity.visualscripting": "1.7.2",
-    "com.unity.xr.oculus": "1.10.0",
     "com.unity.xr.interaction.toolkit": "2.0.0",
+    "com.unity.xr.oculus": "1.10.0",
     "com.unity.xr.openxr": "1.2.8",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",

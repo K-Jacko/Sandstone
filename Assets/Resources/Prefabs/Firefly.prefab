@@ -92,10 +92,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5283921981542637021}
+  - component: {fileID: 5283921981542637009}
   - component: {fileID: 5283921981542637010}
   - component: {fileID: 5283921981542637011}
   - component: {fileID: 5283921981542637008}
-  - component: {fileID: 5283921981542637009}
   - component: {fileID: 3282876152943761718}
   m_Layer: 7
   m_Name: Firefly
@@ -120,6 +120,32 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5283921981542637009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5283921981542637014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6358a069405b8f6448dce859bf2135ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 0
+  combatRadius: 11.16
+  player: {fileID: 0}
+  monster: {fileID: 0}
+  speed: 0.5
+  material: {fileID: 0}
+  traverseType: 2
+  explosionRadius: 3
+  rotationSpeed: 20
+  radius: 2
+  maxHeight: 2
+  shootInterval: 1
+  projectileSpeed: 3.79
+  projectile: {fileID: 6151806324538758977, guid: 186cae12afb2b804a8c3e3598ed5d9be, type: 3}
 --- !u!33 &5283921981542637010
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -183,33 +209,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5283921981542637009
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5283921981542637014}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6358a069405b8f6448dce859bf2135ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnPoint: {x: 0, y: 0, z: 0}
-  spawnRadius: 5
-  combatRadius: 11.16
-  player: {fileID: 0}
-  monster: {fileID: 0}
-  speed: 0.25
-  GemType: 0
-  explosionRadius: 1.11
-  rotationSpeed: 20
-  radius: 2
-  radiusSpeed: 0.5
-  maxHeight: 2
-  shootInterval: 1
-  projectileSpeed: 3.79
-  projectile: {fileID: 6151806324538758977, guid: 186cae12afb2b804a8c3e3598ed5d9be, type: 3}
 --- !u!54 &3282876152943761718
 Rigidbody:
   m_ObjectHideFlags: 0

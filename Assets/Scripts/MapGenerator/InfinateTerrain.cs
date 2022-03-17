@@ -1,18 +1,22 @@
 ﻿
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.AI;
 
 public class InfinateTerrain : MonoBehaviour
 {
-    const float Scale = 0.83f;
+    const float Scale = 1f;
     const float viewerMoveThreshholForChunkUpdate = 25f;
     const float sqrViewerMoveThreshholForChunkUpdate = viewerMoveThreshholForChunkUpdate * viewerMoveThreshholForChunkUpdate;
     public LODInfo[] detailLevels;
     public static float maxViewDst;
     public Transform player;
     public Material mapMaterial;
+    public static Action OnMapUpdated;
 
     public static Vector2 viewerPosition;
     Vector2 viewerPositionOld;
@@ -31,16 +35,11 @@ public class InfinateTerrain : MonoBehaviour
         chunkSize = MapGenerator.mapChunkSize - 1;
         chunksVisibleInViewDst = Mathf.RoundToInt(maxViewDst/chunkSize);
         UpdateVisibleChunks();
+        Player.OnPlayerDistanceTick += UpdateVisibleChunks;
     }
     void Update()
     {
-        viewerPosition = new Vector2(player.position.x, player.position.z) / Scale;
-        if((viewerPositionOld - viewerPosition).sqrMagnitude > sqrViewerMoveThreshholForChunkUpdate)
-        {
-            viewerPositionOld = viewerPosition;
-            UpdateVisibleChunks();
-        }
-        UpdateVisibleChunks();
+        
     }
 
     void UpdateVisibleChunks()
@@ -70,6 +69,9 @@ public class InfinateTerrain : MonoBehaviour
                 }
             }
         }
+
+        OnMapUpdated?.Invoke();
+
     }
 
 
@@ -83,6 +85,7 @@ public class InfinateTerrain : MonoBehaviour
         MeshFilter meshFilter;
         MeshCollider meshCollider;
 
+        
         LODInfo[] detailLevels;
         LODMesh[] lODMeshes;
         LODMesh collisionLODMesh;
@@ -233,5 +236,10 @@ public class InfinateTerrain : MonoBehaviour
         public int lod;
         public float visibleDstThreshold;
         public bool useForCollider;
+    }
+    
+    private void OnDisable()
+    {
+        Player.OnPlayerDistanceTick -= UpdateVisibleChunks;
     }
 }

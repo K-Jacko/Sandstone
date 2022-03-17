@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewMeshGenerator 
+public class MeshGenerator 
 {
     public static MeshData GenerateTerrainMesh(float[,] heightMap, float heightMultiplier, AnimationCurve _heightCurve, int levelOfDetail)
     {
@@ -67,6 +67,8 @@ public class NewMeshGenerator
                 vertexIndex++;
             }
         }
+
+        meshData.BakeNormals();
         return meshData;
     }
 }
@@ -76,6 +78,7 @@ public class MeshData
     private Vector3[] verticies;
     private int[] triangles;
     private Vector2[] uvs;
+    private Vector3[] bakedNormals;
 
     private Vector3[] borderVertecies;
     private int[] borderTriangles;
@@ -186,7 +189,11 @@ public class MeshData
         Vector3 sideAC = pointC - pointA;
         return Vector3.Cross(sideAB, sideAC).normalized;
     }
-
+    
+    public void BakeNormals() {
+        bakedNormals = CalculateNormals ();
+    }
+    
     public Mesh CreateMesh()
     {
         Mesh mesh = new Mesh();

@@ -9,14 +9,11 @@ public class Director : MonoBehaviour
     public float wallet;
     public MobCard[] monsters;
     public float creditMultiplier;
-    public float coEef;
-    public Grid baseGrid;
 
     private int testint = 0;
     public virtual void Awake()
     {
-        TimeManager.OnMinChanged += Tick;
-        TimeManager.OnHourChanged += Tock;
+        
     }
 
     public virtual void Init()
@@ -32,21 +29,6 @@ public class Director : MonoBehaviour
             delegate(MobCard x, MobCard y) { return x.creditCost.CompareTo(y.creditCost); });
     }
 
-    protected virtual void Tick()
-    {
-        print("tick");
-        
-    }
-
-    protected virtual void Tock()
-    {
-        print("tock");
-        coEef += 1f;
-    }
-    
-    private void OnDisable()
-    {
-        TimeManager.OnMinChanged -= Tick;
-    }
+   
     
 }

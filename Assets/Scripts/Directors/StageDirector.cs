@@ -1,24 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
+
 using UnityEngine;
+using Quaternion = UnityEngine.Quaternion;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 public class StageDirector : Director
 {
     public GameObject Player { get; private set; }
     public static StageDirector Instance { get; private set; }
+    public float coEef;
     public bool debugGrid;
     public GameObject shrine;
-    public float spawnRadius;
+    public float shrineSpawnRadius;
     public int gridSize;
-    public GameObject mobSpawner;
-    public List<GameObject> mobSpawners;
-    public int mobSpawnerYOffset;
 
     private Director[] _combatDirectors;
     private Pathfinding _pathfinding;
     private GameObject[] shrines;
+    
 
     // Start is called before the first frame update
+    //Use Task action to make sure Everything load is right order
     public override void Awake()
     {
         base.Awake();
@@ -27,7 +32,8 @@ public class StageDirector : Director
         LoadMonsters();
         GenerateShrines(4);
         GeneratePaths(shrines);
-        Tick();
+        
+        
         //Collect directors better
         _combatDirectors = FindObjectsOfType<Director>();
         foreach (var combatDirector in _combatDirectors)
@@ -35,12 +41,7 @@ public class StageDirector : Director
             combatDirector.Init();
         }
     }
-
-    protected override void Tick()
-    {
-        base.Tick();
-        
-    }
+    
 
     void GenerateShrines(int noShrines)
     {
@@ -48,7 +49,7 @@ public class StageDirector : Director
         shrines = new GameObject[noShrines];
         for (int i = 0; i < noShrines; i++)
         {
-            var go = Instantiate(shrine, origin + new Vector3(Random.Range(-spawnRadius, spawnRadius),100,Random.Range(-spawnRadius, spawnRadius)), Quaternion.identity);
+            var go = Instantiate(shrine, origin + new Vector3(Random.Range(-shrineSpawnRadius, shrineSpawnRadius),100,Random.Range(-shrineSpawnRadius, shrineSpawnRadius)), Quaternion.identity);
             shrines[i] = go;
         }
     }
@@ -70,18 +71,6 @@ public class StageDirector : Director
         }
     }
     
-    void GenerateMobSpawners(Vector3 a, Vector3 b, Pathfinding pathfinding)
-    {
-        var go = Instantiate(mobSpawner,a  - new Vector3(pathfinding.GetGrid().GetCellSize(),mobSpawnerYOffset,pathfinding.GetGrid().GetCellSize()) * (gridSize / 2),Quaternion.identity,gameObject.transform);
-        mobSpawners.Add(go);
-    }
-    
- 
-    
-    void OnDrawGizmos()
-    {
-        Gizmos.color = new Color(0.5f,1f,0.5f,0.1f);
-        Gizmos.DrawSphere(Vector3.zero, spawnRadius);
-    }
+
     
 }
