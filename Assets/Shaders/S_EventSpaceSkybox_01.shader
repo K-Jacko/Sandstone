@@ -672,7 +672,7 @@ Shader "Custom/EventSpaceSkybox"
 				#endif
 
 				
-				float Alpha = 1;
+				float Alpha = 0;
 				float AlphaClipThreshold = 0.5;
 
 				#ifdef _ALPHATEST_ON

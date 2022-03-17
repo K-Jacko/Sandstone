@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Card,", menuName = "Card")]
 public class MobCard : ScriptableObject
 {
+    public enum MovementType {Flying, Walking}
     public new string name;
     public GameObject entity;
     public int creditCost;
@@ -17,4 +18,6 @@ public class MobCard : ScriptableObject
     {
         GemElement = gemElement;
     }
+    
+    
 }

@@ -19,25 +19,32 @@ public class Firefly : Monster
     private StateMachine _stateMachine;
     private Material _spawnerMaterial;
     private LayerMask _floor;
-    private StageDirector _stageDirector;
 
     private bool _shooting;
 
     // Start is called before the first frame update
     void Awake()
     {
-
+        traverseType = TraverseType.Air;
+        Spawn();
         player = StageDirector.Instance.Player;
         monster = gameObject;
-        spawnPoint = transform.position;
         _floor = LayerMask.GetMask("Floor");
         _spawnerMaterial = gameObject.GetComponent<MeshRenderer>().material;
         _stateMachine = new StateMachine();
-        _stageDirector = FindObjectOfType<StageDirector>();
-        
-        InitAttackStates();
-        
 
+        InitAttackStates();
+    }
+
+    public override void Spawn()
+    {
+        int layerMask = 1 << 6;
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position + new Vector3(0,1000,0), Vector3.down, out hit,10000, layerMask))
+        {
+            Debug.Log("HITTTT");
+            transform.position = hit.transform.position + new Vector3(0, 10, 0);
+        }
     }
 
     void InitAttackStates()
@@ -47,7 +54,7 @@ public class Firefly : Monster
         var explode = new Explode(this,_spawnerMaterial);
         
         At(idle, attack, FriendlyInRange());
-        //At(attack, idle, FriendlyNotInRange());
+        At(attack, idle, FriendlyNotInRange());
         _stateMachine.AddAnyTransition(explode, () =>
         {
             var distance = Vector3.Distance(monster.transform.position, player.transform.position);
@@ -61,45 +68,28 @@ public class Firefly : Monster
         Func<bool> FriendlyInRange() => () =>
         {
             var distance = Vector3.Distance(monster.transform.position, player.transform.position);
-            return !(distance > spawnRadius);
+            return !(distance >= combatRadius);
         };
 
-        // Func<bool> FriendlyNotInRange() => () =>
-                     // {
-                     //     var distance = Vector3.Distance(monster.transform.position, player.transform.position);
-                     //     return !(distance <= combatRadius);
-                     // };
+        Func<bool> FriendlyNotInRange() => () =>
+        {
+            var distance = Vector3.Distance(monster.transform.position, player.transform.position);
+            return !(distance < combatRadius);
+        };
     }
     
     private void Update() => _stateMachine.Tick();
 
-    public override void Attack()
-    {
-        Move();
-        if(!_shooting)
-            StartCoroutine(Shoot());
-    }
+    
 
     void Move()
     {
         var position = player.transform.position;
         transform.RotateAround (position, Vector3.up, rotationSpeed * Time.deltaTime);
         Vector3  desiredPosition;
-        if (GemElement.GetElement() == 1)
-        {
-            //Above Head
-            desiredPosition = (transform.position - position).normalized * -radius + position  ;
-        }
-        else if(GemElement.GetElement() == 0)
-        {
-            //Rotate Around
-            desiredPosition = ((transform.position - position).normalized * radius + position) * Mathf.Sin(1); 
-        }
-        else
-        {
-            //Weird Away Above
-            desiredPosition = Vector3.zero;
-        }
+
+        //Rotate Around
+        desiredPosition = ((transform.position - position).normalized * radius + position) * Mathf.Sin(1); 
         
         var distanceFromFloor = GetDistanceFromFloor();
         var warp = new Vector3(desiredPosition.x, distanceFromFloor, desiredPosition.z);
@@ -107,20 +97,36 @@ public class Firefly : Monster
         transform.LookAt(player.transform);
     }
 
+    void MoveDirectly()
+    {
+        transform.position = Vector3.MoveTowards(transform.position, player.transform.position, Time.deltaTime * radiusSpeed);
+    }
+
+    public override void Idle()
+    {
+        MoveDirectly();
+    }
+    public override void Attack()
+    {
+        Move();
+        if(!_shooting)
+            StartCoroutine(Shoot());
+    }
+
     IEnumerator Shoot()
     {
         _shooting = true;
-        yield return new WaitForSeconds(shootInterval);
         var go = Instantiate(projectile, gameObject.transform.position, Quaternion.identity, StageDirector.Instance.transform);
         
         go.GetComponent<Rigidbody>().velocity =
             (player.transform.position - transform.position).normalized * projectileSpeed;
          
         _shooting = false;
+        yield return new WaitForSeconds(shootInterval);
     }
     float GetDistanceFromFloor()
     {
-        if (Physics.Raycast(transform.position, Vector3.down, out var hit, 100f, _floor))
+        if (Physics.Raycast(transform.position, Vector3.down, out var hit, 100f, 6))
         {
             return hit.transform.position.y + maxHeight;
         }
@@ -129,9 +135,7 @@ public class Firefly : Monster
     }
     void OnDrawGizmos()
     {
-        Gizmos.color = new Color(1f,1f,1f,0.2f);
         var position = gameObject.transform.position;
-        Gizmos.DrawSphere(position, spawnRadius);
         Gizmos.color = new Color(0.5f,1f,0.5f,0.1f);
         Gizmos.DrawSphere(position, combatRadius);
         Gizmos.color = new Color(0.1f,0.5f,0.5f,0.1f);

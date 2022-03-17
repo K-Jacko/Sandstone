@@ -105,6 +105,7 @@ public class InfinateTerrain : MonoBehaviour
             meshObject.transform.position = positionV3 * Scale;
             meshObject.transform.parent = parent;
             meshObject.transform.localScale = Vector3.one * Scale;
+            meshObject.layer = 6;
             SetVisible(false);
             
             lODMeshes = new LODMesh[detailLevels.Length];

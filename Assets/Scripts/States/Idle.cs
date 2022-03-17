@@ -13,7 +13,7 @@ public class Idle : IState
     public void Tick()
     {
         _entitymMaterial.color = _color;
-        _entity.Return();
+        _entity.Idle();
     }
 
     public Idle(Monster entity, Material material, GameObject player)

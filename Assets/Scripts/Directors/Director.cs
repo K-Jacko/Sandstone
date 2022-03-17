@@ -16,6 +16,7 @@ public class Director : MonoBehaviour
     public virtual void Awake()
     {
         TimeManager.OnMinChanged += Tick;
+        TimeManager.OnHourChanged += Tock;
     }
 
     public virtual void Init()
@@ -34,8 +35,13 @@ public class Director : MonoBehaviour
     protected virtual void Tick()
     {
         print("tick");
-        coEef += 1f;
+        
+    }
 
+    protected virtual void Tock()
+    {
+        print("tock");
+        coEef += 1f;
     }
     
     private void OnDisable()

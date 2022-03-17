@@ -39,15 +39,7 @@ public class StageDirector : Director
     protected override void Tick()
     {
         base.Tick();
-        mobSpawners.Sort(delegate(GameObject x, GameObject y) { return Vector3.Distance(Player.transform.position,x.transform.position).CompareTo(Vector3.Distance(Player.transform.position,y.transform.position)); });
-        for (int i = 0; i < mobSpawners.Count; i++)
-        {
-            mobSpawners[i].SetActive(false);
-        }
-        if(!mobSpawners[0].activeSelf)
-            mobSpawners[0].SetActive(true);
-        if(!mobSpawners[1].activeSelf)
-            mobSpawners[1].SetActive(true);
+        
     }
 
     void GenerateShrines(int noShrines)
@@ -73,7 +65,6 @@ public class StageDirector : Director
                 for (int j = 0; j < path.Count - 1; j++)
                 {
                     Debug.DrawLine(path[j] +  _pathfinding.GetGrid().GetOffset() + new Vector3(0,50,0),path[j+1] +  _pathfinding.GetGrid().GetOffset() + new Vector3(0,50,0),Color.red, 100f);
-                    GenerateMobSpawners(path[j],path[j+1],_pathfinding);
                 }
             }
         }
