@@ -376,7 +376,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d72fff270671214aace57bed4ff3413, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerState: 2
   health: 5
+  distanceTickThreshold: 25
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &3153030228558313491
 GameObject:
   m_ObjectHideFlags: 0

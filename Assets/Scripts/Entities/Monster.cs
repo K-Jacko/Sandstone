@@ -30,7 +30,7 @@ public class Monster : MonoBehaviour
     public virtual void Init()
     {
         material = gameObject.GetComponent<MeshRenderer>().material;
-        player = StageDirector.Instance.Player;
+        player = StageDirector.Instance.Player.gameObject;
         _stateMachine = new StateMachine();
         monster = gameObject;
         InitAttackStates();
@@ -60,20 +60,20 @@ public class Monster : MonoBehaviour
         var idle = new Idle(this,material,player);
         var attack = new Attack(this,material,player);
 
-        At(idle, attack, FriendlyInRange());
-        At(attack, idle, FriendlyNotInRange());
+        At(attack, idle, FriendlyInRange());
+        At(idle, attack, FriendlyNotInRange());
 
         _stateMachine.SetState(idle);
         
         void At(IState to, IState from, Func<bool> condition) => _stateMachine.AddTransition(to, from, condition);
 
-        Func<bool> FriendlyInRange() => () =>
+        Func<bool> FriendlyNotInRange() => () =>
         {
             var distance = Vector3.Distance(monster.transform.position, player.transform.position);
             return !(distance >= combatRadius);
         };
 
-        Func<bool> FriendlyNotInRange() => () =>
+        Func<bool> FriendlyInRange() => () =>
         {
             var distance = Vector3.Distance(monster.transform.position, player.transform.position);
             return !(distance < combatRadius);

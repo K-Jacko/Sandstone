@@ -136,12 +136,10 @@ MonoBehaviour:
   combatRadius: 11.16
   player: {fileID: 0}
   monster: {fileID: 0}
-  speed: 0.5
+  speed: 3
   material: {fileID: 0}
   traverseType: 2
   explosionRadius: 3
-  rotationSpeed: 20
-  radius: 2
   maxHeight: 2
   shootInterval: 1
   projectileSpeed: 3.79

@@ -13,16 +13,13 @@ public class CombatDirector : Director
     public float spawnRadius = 5f;
     
     private MobCard[] _validMobs;
-    private GameObject _player;
-    private NavMeshSurface navMesh;
+    private Player _player;
     private Vector2 viewerPositionOld;
 
     public override void Init()
     {
         _validMobs = ValidateMobCards(StageDirector.Instance.monsters);
         _player = StageDirector.Instance.Player;
-        //GenerateMobSpawners(baseGrid);
-        Player.OnPlayerDistanceTick += GenerateNavMesh;
         switch (combatDirectorType)
         {
             case CombatDirectorType.Fast :
@@ -39,52 +36,45 @@ public class CombatDirector : Director
 
     void Tick()
     {
-        //This fires off event that all the spawners are subbed too. 
-        //This will spawn from the lowest priced and expend its wallet. Implement weights so harder enemies are prioritised with bigger wallets
-        var oldWallet = wallet;
-        for (var i = 0; i < _validMobs.Length; i++)
+        if (_player.playerState == Player.PlayerState.Combat)
         {
-            var validMob = _validMobs[i];
-            if (wallet >= validMob.creditCost)
+            //This fires off event that all the spawners are subbed too. 
+            //This will spawn from the lowest priced and expend its wallet. Implement weights so harder enemies are prioritised with bigger wallets
+            var oldWallet = wallet;
+            for (var i = 0; i < _validMobs.Length; i++)
             {
-                wallet -= validMob.creditCost;
+                var validMob = _validMobs[i];
+                if (wallet >= validMob.creditCost)
+                {
+                    wallet -= validMob.creditCost;
 
-                var go = Instantiate(validMob.entity,
-                    _player.transform.position + new Vector3(0,10,0) + new Vector3(Random.Range(-spawnRadius, spawnRadius),
-                        Random.Range(-spawnRadius, spawnRadius), Random.Range(-spawnRadius, spawnRadius)),
-                    Quaternion.identity);
-                var goM = go.GetComponent<Monster>();
-                validMob.GemElement = new None();
-                goM.GemElement = validMob.GemElement;
-                goM.gameObject.GetComponent<MeshRenderer>().material = validMob.mobMaterial;
-            }
-            else if (wallet > 0f && wallet < 5)
-            {
-                i = -1;
-            }
-            else if (wallet == 0 || wallet == 5)
-            {
-                wallet += (oldWallet * creditMultiplier) + StageDirector.Instance.coEef;
-                break;
-            }
+                    var go = Instantiate(validMob.entity,
+                        _player.transform.position  + new Vector3(Random.Range(-spawnRadius, spawnRadius),
+                            Random.Range(-spawnRadius, spawnRadius), Random.Range(-spawnRadius, spawnRadius)),
+                        Quaternion.identity);
+                    var goM = go.GetComponent<Monster>();
+                    validMob.GemElement = new None();
+                    goM.GemElement = validMob.GemElement;
+                    goM.gameObject.GetComponent<MeshRenderer>().material = validMob.mobMaterial;
+                }
+                else if (wallet > 0f && wallet < 5)
+                {
+                    i = -1;
+                }
+                else if (wallet == 0 || wallet == 5)
+                {
+                    wallet += (oldWallet * creditMultiplier) + StageDirector.Instance.coEef;
+                    break;
+                }
             
+            }
+
+            StageDirector.Instance.GenerateNavMesh();
         }
-        GenerateNavMesh();
+        
     }
 
-    void GenerateNavMesh()
-    {
-        if (!navMesh)
-            navMesh = gameObject.AddComponent<NavMeshSurface>();
-        //navMesh.RemoveData();
-       
-        int layerMask = 1 << 6;
-        navMesh.layerMask = layerMask;
-        navMesh.collectObjects = CollectObjects.Volume;
-        navMesh.size = new Vector3(spawnRadius * 2, 30, spawnRadius * 2);
-        navMesh.center = new Vector3(_player.transform.position.x, 0, _player.transform.position.z);
-        navMesh.BuildNavMesh();
-    }
+    
     
     MobCard[] ValidateMobCards(MobCard[] mobCards)
     {

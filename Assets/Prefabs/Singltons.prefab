@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 194226553965952419}
   - component: {fileID: 194226553965952416}
+  - component: {fileID: 773148934}
+  - component: {fileID: 5507566709761779556}
   m_Layer: 0
   m_Name: StageDirector
   m_TagString: Untagged
@@ -49,14 +51,37 @@ MonoBehaviour:
   monsters: []
   creditMultiplier: 0
   coEef: 0
-  baseGrid: {fileID: 0}
   debugGrid: 0
-  shrine: {fileID: 0}
-  spawnRadius: 0
-  gridSize: 0
-  mobSpawner: {fileID: 0}
-  mobSpawners: []
-  mobSpawnerYOffset: 0
+  shrine: {fileID: 3266434858607149511, guid: cd1aea3d30fd0e84ba90a1fb14e4620c, type: 3}
+  shrineSpawnRadius: 1000
+  gridSize: 100
+--- !u!114 &773148934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 194226553965952418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 043ed736ae2743f6b72e85335b28db77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  Skybox: {fileID: 0}
+--- !u!114 &5507566709761779556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 194226553965952418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7674f42df9d3dce4c92b4429a50f339c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MinuteToRealTime: 10
 --- !u!1 &194226554977450987
 GameObject:
   m_ObjectHideFlags: 0
@@ -86,7 +111,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 194226553965952419}
-  - {fileID: 194226555449392271}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -136,54 +160,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wallet: 100
   monsters: []
-  creditMultiplier: 10
-  coEef: 1
-  baseGrid: {fileID: 0}
-  spawnRadius: 5
-  gridWidth: 6
-  gridHeight: 6
-  cellSize: 150
---- !u!1 &194226555449392270
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 194226555449392271}
-  - component: {fileID: 194226555449392268}
-  m_Layer: 0
-  m_Name: TimeManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &194226555449392271
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 194226555449392270}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 194226554977450984}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &194226555449392268
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 194226555449392270}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7674f42df9d3dce4c92b4429a50f339c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  creditMultiplier: 2
+  combatDirectorType: 1
+  spawnRadius: 50

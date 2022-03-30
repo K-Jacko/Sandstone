@@ -27,7 +27,7 @@ public class InfinateTerrain : MonoBehaviour
     Dictionary< Vector2, TerrainChunk> terrainChunkDictionary = new Dictionary<Vector2, TerrainChunk>();
     static List<TerrainChunk> terrainChunksVisibleLastUpdate = new List<TerrainChunk>();
 
-    void Start()
+    public void Init()
     {
         mapGenerator = gameObject.GetComponent<MapGenerator>();
 
@@ -39,7 +39,8 @@ public class InfinateTerrain : MonoBehaviour
     }
     void Update()
     {
-        
+        var position = StageDirector.Instance.Player.transform.position;
+        viewerPosition = new Vector2(position.x,position.z);
     }
 
     void UpdateVisibleChunks()
@@ -238,8 +239,8 @@ public class InfinateTerrain : MonoBehaviour
         public bool useForCollider;
     }
     
-    private void OnDisable()
-    {
-        Player.OnPlayerDistanceTick -= UpdateVisibleChunks;
-    }
+    // private void OnDisable()
+    // {
+    //     Player.OnPlayerDistanceTick -= UpdateVisibleChunks;
+    // }
 }

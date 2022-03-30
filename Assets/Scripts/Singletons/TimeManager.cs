@@ -15,7 +15,7 @@ public class TimeManager : MonoBehaviour
     public static int Hour { get; private set; }
     
     //Every (i)sec IRL is a Min in game
-    public const float MinuteToRealTime = 10f;
+    public float MinuteToRealTime = 10f;
 
     private float timer;
     
