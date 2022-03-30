@@ -1,5 +1,54 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1855872754
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1855872755}
+  - component: {fileID: 1855872756}
+  m_Layer: 0
+  m_Name: CombatDirectorTest (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1855872755
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1855872754}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 194226553965952419}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1855872756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1855872754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ce5537f136ddd44ea60217742fec4d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wallet: 100
+  monsters: []
+  creditMultiplier: 3
+  combatDirectorType: 2
+  spawnRadius: 50
 --- !u!1 &194226553965952418
 GameObject:
   m_ObjectHideFlags: 0
@@ -12,6 +61,8 @@ GameObject:
   - component: {fileID: 194226553965952416}
   - component: {fileID: 773148934}
   - component: {fileID: 5507566709761779556}
+  - component: {fileID: 773148937}
+  - component: {fileID: 773148938}
   m_Layer: 0
   m_Name: StageDirector
   m_TagString: Untagged
@@ -32,6 +83,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 194226555082041903}
+  - {fileID: 1855872755}
   m_Father: {fileID: 194226554977450984}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -55,6 +107,9 @@ MonoBehaviour:
   shrine: {fileID: 3266434858607149511, guid: cd1aea3d30fd0e84ba90a1fb14e4620c, type: 3}
   shrineSpawnRadius: 1000
   gridSize: 100
+  safeZones: []
+  shrines: []
+  navMesh: {fileID: 0}
 --- !u!114 &773148934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,7 +136,92 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7674f42df9d3dce4c92b4429a50f339c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MinuteToRealTime: 10
+  MinuteToRealTime: 30
+--- !u!114 &773148937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 194226553965952418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba084d346eea16a49829ee29fbb2419a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detailLevels:
+  - lod: 0
+    visibleDstThreshold: 400
+    useForCollider: 0
+  - lod: 2
+    visibleDstThreshold: 500
+    useForCollider: 1
+  - lod: 5
+    visibleDstThreshold: 600
+    useForCollider: 0
+  player: {fileID: 0}
+  mapMaterial: {fileID: 2100000, guid: f44b6dd038cfcaa48a667d3d846cd22a, type: 2}
+--- !u!114 &773148938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 194226553965952418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd79442ee0cb759479ce4fa5938e2fa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drawMode: 2
+  normalizeMode: 1
+  editiorPreviewLOD: 0
+  seed: 39
+  noiseScale: 100
+  meshHeightMultiplier: 10
+  meshHeightCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  octaves: 2
+  persistance: 0.637
+  lacunarity: 1
+  useFalloff: 0
+  autoUpdate: 0
+  offset: {x: 0, y: 0}
+  regions:
+  - name: low
+    height: 0
+    color: {r: 0.43137258, g: 0.34901962, b: 0.2784314, a: 0}
+  - name: Shore
+    height: 0.2
+    color: {r: 0.509434, g: 0.41239014, b: 0.3292097, a: 0}
+  - name: Wash
+    height: 0.4
+    color: {r: 0.5943396, g: 0.47810265, b: 0.378471, a: 0}
+  - name: Highland
+    height: 0.5
+    color: {r: 0.7264151, g: 0.61240655, b: 0.51739943, a: 0}
 --- !u!1 &194226554977450987
 GameObject:
   m_ObjectHideFlags: 0
