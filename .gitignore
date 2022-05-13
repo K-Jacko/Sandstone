@@ -10,6 +10,11 @@
 /[Ll]ogs/
 /[Mm]emoryCaptures/
 
+Assets/TempSceneCache/
+Assets/TempSceneCache.meta
+Assets/StreamingAssets/AssetBundles/
+Assets/StreamingAssets/AssetBundles.meta
+
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
 
@@ -50,6 +55,8 @@ ExportedObj/
 
 # Unity3D generated file on crash reports
 sysinfo.txt
+.gradle
+.pkf
 
 # Builds
 *.apk
