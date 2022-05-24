@@ -80,7 +80,6 @@ public class MapGenerator : MonoBehaviour
             {
                 mapDataThreadInfoQueue.Enqueue(new MapThreadInfo<MapData>(callback, mapData));
             }
-
     }
 
     public void RequestMeshData(MapData mapData, int lod, Action<MeshData> callback)
@@ -120,8 +119,6 @@ public class MapGenerator : MonoBehaviour
                 threadInfo.callback(threadInfo.parameter);
             }
         }
-
-
     }
 
     MapData GenerateMapData(Vector2 center)
@@ -146,7 +143,6 @@ public class MapGenerator : MonoBehaviour
                     {
                         break;
                     }
-
                 }
             }
         }
@@ -160,8 +156,7 @@ public class MapGenerator : MonoBehaviour
             lacunarity = 1;
         if(octaves < 0)
             octaves = 0;
-
-
+        
         falloffMap = FalloffGenerator.GenerateFalloffMap(mapChunkSize);
     }
 

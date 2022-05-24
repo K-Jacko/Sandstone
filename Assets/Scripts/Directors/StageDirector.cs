@@ -44,7 +44,8 @@ public class StageDirector : Director
         Player = GameObject.Find("Player").GetComponent<Player>();
         Instance = this;
         var MapGenerator = GetComponent<InfinateTerrain>();
-        MapGenerator.Init();
+        if(MapGenerator)
+            MapGenerator.Init();
         _combatDirectors = GetDirectors();
     }
 
@@ -100,12 +101,12 @@ public class StageDirector : Director
             navMesh.layerMask = layerMask;
             navMesh.collectObjects = CollectObjects.Volume;
             navMesh.size = new Vector3(300, 30, 300);
-            navMesh.center = new Vector3(Player.transform.position.x, 0, Player.transform.position.z);
+            navMesh.center = Player.transform.position;
             navMesh.BuildNavMesh();
         }
         else
         {
-            navMesh.center = new Vector3(Player.transform.position.x, 0, Player.transform.position.z);
+            navMesh.center = Player.transform.position;
             navMesh.UpdateNavMesh(navMesh.navMeshData);
         }
 

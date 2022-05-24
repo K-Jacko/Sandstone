@@ -9,17 +9,17 @@ public class MapDisplay : MonoBehaviour
     public MeshFilter meshFilter;
     public MeshRenderer meshRenderer;
     public MeshCollider collider;
-    void Awake()
+    public void GrabComponents()
     {
         renderer = gameObject.GetComponent<Renderer>();
-        //meshFilter = gameObject.GetComponent<MeshFilter>();
-        //meshRenderer = gameObject.GetComponent<MeshRenderer>();
-        //collider = gameObject.//
+        meshFilter = gameObject.GetComponent<MeshFilter>();
+        meshRenderer = gameObject.GetComponent<MeshRenderer>();
+        collider = gameObject.GetComponent<MeshCollider>();
     }
 
     private void Update()
     {
-        collider.sharedMesh = meshFilter.sharedMesh;
+        
     }
 
     public void DrawTexture(Texture2D texture)
@@ -32,6 +32,7 @@ public class MapDisplay : MonoBehaviour
     {
         meshFilter.sharedMesh = meshData.CreateMesh();
         meshRenderer.sharedMaterial.mainTexture = texture;
+        collider.sharedMesh = meshFilter.sharedMesh;
     }
     
 }
