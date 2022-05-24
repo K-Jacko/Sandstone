@@ -333,6 +333,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 569010551}
     - target: {fileID: 194226553965952416, guid: 4cbdbf99aee39324998241ce6b8f1dff, type: 3}
+      propertyPath: shrine
+      value: 
+      objectReference: {fileID: 3253760164202930859, guid: af51bbab5ead4fa409ace6eceba182dc, type: 3}
+    - target: {fileID: 194226553965952416, guid: 4cbdbf99aee39324998241ce6b8f1dff, type: 3}
       propertyPath: shrineSpawnRadius
       value: 500
       objectReference: {fileID: 0}
@@ -396,6 +400,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 878950481, guid: 42982ee8c907ff34086ea893930605d3, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3153030228471721461, guid: 42982ee8c907ff34086ea893930605d3, type: 3}
       propertyPath: m_RootOrder
       value: 1

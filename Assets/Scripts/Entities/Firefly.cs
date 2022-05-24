@@ -59,6 +59,7 @@ public class Firefly : Monster
         
         go.GetComponent<Rigidbody>().velocity =
             (player.transform.position - transform.position).normalized * projectileSpeed;
+        go.transform.parent = transform;
          
         _shooting = false;
         
