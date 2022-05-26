@@ -12,9 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f7bc09731baadb43ab04acaf742fdc9, type: 3}
   m_Name: Scarab Inferno
   m_EditorClassIdentifier: 
+  movementType: 0
   name: Scarab Inferno
   entity: {fileID: 8599013494987535353, guid: 684f37bbc378e97479ec27a8052686c8, type: 3}
   creditCost: 40
   weight: 2
-  health: 20
   mobMaterial: {fileID: 2100000, guid: 7dce23e36ddefe64f8705767edaf711a, type: 2}
+  ability: {fileID: 11400000, guid: 95454454981b8c249a83f7bcabfe0aa5, type: 2}
+  Stamina: 0
+  Power: 30
+  Agility: 3
+  Focus: 0

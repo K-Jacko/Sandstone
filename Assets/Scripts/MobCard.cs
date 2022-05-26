@@ -6,18 +6,21 @@ using UnityEngine;
 public class MobCard : ScriptableObject
 {
     public enum MovementType {Flying, Walking}
+
+    public MovementType movementType;
     public new string name;
     public GameObject entity;
+    
     public int creditCost;
     public float weight;
-    public GemElement GemElement;
-    public int health;
+    
+    public GemElement GemElement; //refactor this. You need to think about what needs to change in mutations
     public Material mobMaterial;
 
-    public MobCard(GemElement gemElement)
-    {
-        GemElement = gemElement;
-    }
-    
-    
+    public Ability ability;
+
+    public int Stamina;
+    public int Power;
+    public int Agility;
+    public int Focus;
 }

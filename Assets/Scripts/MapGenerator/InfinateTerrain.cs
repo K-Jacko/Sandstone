@@ -35,7 +35,7 @@ public class InfinateTerrain : MonoBehaviour
         chunkSize = MapGenerator.mapChunkSize - 1;
         chunksVisibleInViewDst = Mathf.RoundToInt(maxViewDst/chunkSize);
         UpdateVisibleChunks();
-        Player.OnPlayerDistanceTick += UpdateVisibleChunks;
+        //Player.OnPlayerDistanceTick += UpdateVisibleChunks;
     }
     void Update()
     {

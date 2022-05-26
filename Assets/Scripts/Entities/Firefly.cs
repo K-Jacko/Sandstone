@@ -15,29 +15,29 @@ public class Firefly : Monster
     
     private LayerMask _floor;
 
-    private bool _shooting;
-
     // Start is called before the first frame update
     void Awake()
     {
-        Init();
+        
     }
 
     public override void Init()
     {
         base.Init();
         InitAttackStates();
+        ManaPool = Focus;
         traverseType = TraverseType.Air;
         Spawn();
     }
 
-    void InitAttackStates()
+    public override void InitAttackStates()
     {
+        base.InitAttackStates();
         var explode = new Explode(this,material);
         
         this._stateMachine.AddAnyTransition(explode, () =>
         {
-            var distance = Vector3.Distance(monster.transform.position, player.transform.position);
+            var distance = Vector3.Distance(transform.position, player.transform.position);
             return distance <= explosionRadius;
         });
     }
@@ -47,23 +47,18 @@ public class Firefly : Monster
 
     public override void Attack()
     {
-        if(!_shooting)
-            StartCoroutine(Shoot());
+        if (!isCasting && ManaPool >= ability.manaCost)
+        {
+            isCasting = true;
+            Cast(ability, player.GetComponent<Entity>());
+            
+        }
+        else
+        {
+            Refactor();
+        }
     }
 
-    IEnumerator Shoot()
-    {
-        _shooting = true;
-        yield return new WaitForSeconds(shootInterval);
-        var go = Instantiate(projectile, gameObject.transform.position, Quaternion.identity, StageDirector.Instance.transform);
-        
-        go.GetComponent<Rigidbody>().velocity =
-            (player.transform.position - transform.position).normalized * projectileSpeed;
-        go.transform.parent = transform;
-         
-        _shooting = false;
-        
-    }
     float GetDistanceFromFloor()
     {
         int layerMask = 1 << 6;

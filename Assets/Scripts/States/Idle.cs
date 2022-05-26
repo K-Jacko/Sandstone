@@ -12,7 +12,6 @@ public class Idle : IState
 
     public void Tick()
     {
-        _entitymMaterial.color = _color;
         _entity.Idle();
     }
 
@@ -25,7 +24,7 @@ public class Idle : IState
 
     public void OnEnter()
     {
-        
+        _entitymMaterial.color = _color;
     }
 
     public void OnExit()

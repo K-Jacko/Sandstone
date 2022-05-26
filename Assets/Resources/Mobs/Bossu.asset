@@ -12,9 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f7bc09731baadb43ab04acaf742fdc9, type: 3}
   m_Name: Bossu
   m_EditorClassIdentifier: 
+  movementType: 0
   name: Bossu
   entity: {fileID: 8599013494987535353, guid: 684f37bbc378e97479ec27a8052686c8, type: 3}
   creditCost: 70
   weight: 4
-  health: 445
   mobMaterial: {fileID: 2100000, guid: 07198d265a650394aad04d668bb065db, type: 2}
+  ability: {fileID: 11400000, guid: 95454454981b8c249a83f7bcabfe0aa5, type: 2}
+  Stamina: 0
+  Power: 0
+  Agility: 3
+  Focus: 0

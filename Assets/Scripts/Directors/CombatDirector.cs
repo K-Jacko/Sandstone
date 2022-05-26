@@ -13,7 +13,7 @@ public class CombatDirector : Director
     public float spawnRadius = 5f;
     
     private MobCard[] _validMobs;
-    private Player _player;
+    private Entity _player;
     private Vector2 viewerPositionOld;
 
     public override void Init()
@@ -36,27 +36,17 @@ public class CombatDirector : Director
 
     void Tick()
     {
-        if (_player.playerState == Player.PlayerState.Combat)
-        {
+        //if (_player.playerState == Player.PlayerState.Combat)
+        //{
             //This fires off event that all the spawners are subbed too. 
             //This will spawn from the lowest priced and expend its wallet. Implement weights so harder enemies are prioritised with bigger wallets
             var oldWallet = wallet;
             for (var i = 0; i < _validMobs.Length; i++)
             {
-                var validMob = _validMobs[i];
-                if (wallet >= validMob.creditCost)
+                var mobCard = _validMobs[i];
+                if (wallet >= mobCard.creditCost)
                 {
-                    wallet -= validMob.creditCost;
-
-                    var go = Instantiate(validMob.entity,
-                        _player.transform.position + new Vector3(Random.Range(-spawnRadius, spawnRadius),
-                            Random.Range(-spawnRadius, spawnRadius), Random.Range(-spawnRadius, spawnRadius)),
-                        Quaternion.identity);
-                    var goM = go.GetComponent<Monster>();
-                    go.transform.parent = transform;
-                    validMob.GemElement = new None();
-                    goM.GemElement = validMob.GemElement;
-                    goM.gameObject.GetComponent<MeshRenderer>().material = validMob.mobMaterial;
+                    SpawnMob(mobCard);
                 }
                 else if (wallet > 0f && wallet < 5)
                 {
@@ -71,7 +61,31 @@ public class CombatDirector : Director
             }
 
             StageDirector.Instance.GenerateNavMesh();
-        }
+        //}
+        
+    }
+
+    void SpawnMob(MobCard mobCard)
+    {
+        wallet -= mobCard.creditCost;
+
+        var go = Instantiate(mobCard.entity,
+            _player.transform.position + new Vector3(Random.Range(-spawnRadius, spawnRadius),
+                Random.Range(-spawnRadius, spawnRadius), Random.Range(-spawnRadius, spawnRadius)),
+            Quaternion.identity);
+        var monsterScript = go.GetComponent<Monster>();
+
+        monsterScript.GemElement = mobCard.GemElement;
+        monsterScript.gameObject.GetComponentInChildren<MeshRenderer>().material = mobCard.mobMaterial;
+
+        monsterScript.ability = mobCard.ability;
+        
+        monsterScript.Stamina = mobCard.Stamina;
+        monsterScript.Agility = mobCard.Agility;
+        monsterScript.Focus = mobCard.Focus;
+        monsterScript.Power = mobCard.Power;
+        monsterScript.Init();
+        go.transform.parent = transform;
         
     }
 

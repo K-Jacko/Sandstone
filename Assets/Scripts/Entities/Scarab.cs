@@ -24,29 +24,14 @@ public class Scarab : Monster
     {
         agent.SetDestination(player.transform.position);
         if (agent.hasPath)
-            agent.acceleration = (agent.remainingDistance < 1) ? speed : 2;
-        else
-        {
-            // RaycastHit hit;
-            // var layerMask = 1 << 6;
-            // if (Physics.Raycast(transform.position, Vector3.down, out hit, 100, layerMask))
-            // {
-            //     transform.position = hit.point;
-            // }
-        }
+            agent.acceleration = (agent.remainingDistance < 1) ? Agility : 2;
+       
     }
 
     public override void Attack()
     {
         var position = player.transform.position;
-        //transform.RotateAround (position, Vector3.up, rotationSpeed * Time.deltaTime);
-        Vector3  desiredPosition;
-
-        //Rotate Around
-        //desiredPosition = ((transform.position - position).normalized * radius + position) * Mathf.Sin(1); 
-        
-        //transform.position = Vector3.MoveTowards(transform.position, desiredPosition, Time.deltaTime * speed);
-        timer += Time.deltaTime * speed;
+        timer += Time.deltaTime * Agility;
         transform.LookAt(player.transform);
         float x = -Mathf.Cos(timer) * rotationSpeed;
         float z = Mathf.Sin(timer) * rotationSpeed;

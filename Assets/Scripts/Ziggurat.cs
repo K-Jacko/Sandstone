@@ -17,9 +17,6 @@ public class Ziggurat : MonoBehaviour
     {
         player = StageDirector.Instance.Player.gameObject;
         
-        layerMask = 1 << 6;
-        
-        
     }
 
     // Update is called once per frame
@@ -28,6 +25,7 @@ public class Ziggurat : MonoBehaviour
         if (!isPlaced)
         {
             RaycastHit hit;
+            layerMask = 1 << 6;
             if (Physics.Raycast(new Vector3(0, 100, 0), Vector3.down, out hit, 1000, layerMask))
             {
                 transform.position = hit.point;

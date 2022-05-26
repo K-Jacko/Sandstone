@@ -11,7 +11,7 @@ using Vector3 = UnityEngine.Vector3;
 
 public class StageDirector : Director
 {
-    public Player Player { get; private set; }
+    public Entity Player { get; private set; }
     public static StageDirector Instance { get; private set; }
     public float coEef;
     public bool debugGrid;

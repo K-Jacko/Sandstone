@@ -12,9 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f7bc09731baadb43ab04acaf742fdc9, type: 3}
   m_Name: FireFly Inferno
   m_EditorClassIdentifier: Assembly-CSharp::MonsterType
+  movementType: 0
   name: Firefly Inferno
   entity: {fileID: 5283921981542637014, guid: 0bab58fb60cf9e64c82433bffa3c18fe, type: 3}
   creditCost: 30
   weight: 1
-  health: 10
   mobMaterial: {fileID: 2100000, guid: 471bc5b50bd0017419db360f8126fa64, type: 2}
+  ability: {fileID: 11400000, guid: 95454454981b8c249a83f7bcabfe0aa5, type: 2}
+  Stamina: 0
+  Power: 30
+  Agility: 3
+  Focus: 20

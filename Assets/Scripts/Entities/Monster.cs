@@ -4,13 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Monster : MonoBehaviour
+public class Monster : Entity
 {
-    public float health;
+    
     public float combatRadius;
     public GameObject player;
-    public GameObject monster;
-    public float speed;
+    
     public GemElement GemElement;
     public Material material;
 
@@ -29,10 +28,9 @@ public class Monster : MonoBehaviour
 
     public virtual void Init()
     {
-        material = gameObject.GetComponent<MeshRenderer>().material;
+        //material = gameObject.GetComponentInChildren<MeshRenderer>().material;
         player = StageDirector.Instance.Player.gameObject;
         _stateMachine = new StateMachine();
-        monster = gameObject;
         InitAttackStates();
     }
     public virtual void Spawn()
@@ -50,32 +48,32 @@ public class Monster : MonoBehaviour
         {
             if (Physics.Raycast(transform.position + new Vector3(0,1000,0), Vector3.down, out hit,10000, layerMask))
             {
-                transform.position = hit.point + new Vector3(0,GetComponent<Collider>().bounds.extents.y + 1,0);
+                transform.position = hit.point;
             }
         }
         
     }
-    void InitAttackStates()
+    public virtual void InitAttackStates()
     {
-        var idle = new Idle(this,material,player);
-        var attack = new Attack(this,material,player);
-
-        At(attack, idle, FriendlyInRange());
-        At(idle, attack, FriendlyNotInRange());
-
+        var idle = new Idle(this,material,player.gameObject);
+        var attack = new Attack(this,material,player.gameObject);
+        
+        At(attack, idle, PlayerInRange());
+        At(idle, attack, PlayerNotInRange());
+        
         _stateMachine.SetState(idle);
         
         void At(IState to, IState from, Func<bool> condition) => _stateMachine.AddTransition(to, from, condition);
-
-        Func<bool> FriendlyNotInRange() => () =>
+        
+        Func<bool> PlayerNotInRange() => () =>
         {
-            var distance = Vector3.Distance(monster.transform.position, player.transform.position);
+            var distance = Vector3.Distance(transform.position, player.gameObject.transform.position);
             return !(distance >= combatRadius);
         };
-
-        Func<bool> FriendlyInRange() => () =>
+        
+        Func<bool> PlayerInRange() => () =>
         {
-            var distance = Vector3.Distance(monster.transform.position, player.transform.position);
+            var distance = Vector3.Distance(transform.position, player.transform.position);
             return !(distance < combatRadius);
         };
     }
@@ -88,7 +86,7 @@ public class Monster : MonoBehaviour
     public virtual void Idle()
     {
         //MoveDirectly
-        transform.position = Vector3.MoveTowards(transform.position, player.transform.position, Time.deltaTime * speed);
+        transform.position = Vector3.MoveTowards(transform.position, player.transform.position, Time.deltaTime * Agility);
     }
     
     public void Kill()

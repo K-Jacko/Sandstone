@@ -132,18 +132,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6358a069405b8f6448dce859bf2135ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 0
+  Stamina: 0
+  Focus: 0
+  Agility: 3
+  Power: 0
+  isCasting: 0
+  castRefference:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Cast Refference
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 2181aac6-658b-4568-b37c-3fec9f917dc4
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  ManaPool: 0
   combatRadius: 11.16
   player: {fileID: 0}
-  monster: {fileID: 0}
-  speed: 3
-  material: {fileID: 0}
+  material: {fileID: 2100000, guid: cc25497e7f860d745bf4ddc0c37b7458, type: 2}
   traverseType: 2
   explosionRadius: 3
   maxHeight: 2
   shootInterval: 1
   projectileSpeed: 3.79
   projectile: {fileID: 6151806324538758977, guid: 186cae12afb2b804a8c3e3598ed5d9be, type: 3}
+  ability: {fileID: 11400000, guid: 95454454981b8c249a83f7bcabfe0aa5, type: 2}
 --- !u!33 &5283921981542637010
 MeshFilter:
   m_ObjectHideFlags: 0

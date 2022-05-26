@@ -11,7 +11,7 @@ public class Attack : IState
     
     public void Tick()
     {
-        entityMaterial.color = _color;
+        
         _entity.Attack();
     }
 
@@ -24,7 +24,7 @@ public class Attack : IState
 
     public void OnEnter()
     {
-        
+        entityMaterial.color = _color;
     }
 
     public void OnExit()
