@@ -8,8 +8,8 @@ public class IslandGenerator : MapGenerator
     const int mapChunkSize = 239;
     
     float[,] falloffMap;
-    GameObject landMesh;
-    GameObject waterMesh;
+    public GameObject landMesh;
+    public GameObject waterMesh;
 
     void Awake()
     {

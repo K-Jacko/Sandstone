@@ -100,7 +100,7 @@ public class StageDirector : Director
             int layerMask = 1 << 6;
             navMesh.layerMask = layerMask;
             navMesh.collectObjects = CollectObjects.Volume;
-            navMesh.size = new Vector3(300, 30, 300);
+            navMesh.size = new Vector3(300, 100, 300);
             navMesh.center = Player.transform.position;
             navMesh.BuildNavMesh();
         }

@@ -12,8 +12,10 @@ public class Player : Entity
     public PlayerState playerState = PlayerState.Home;
     
     private bool inSafeZone;
+    private bool inHomeZone;
     private StateMachine _stateMachine;
     private ActionBasedContinuousMoveProvider _moveProvider;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -50,7 +52,7 @@ public class Player : Entity
         var combat = new Combat(this);
         var home = new Home();
         
-        _stateMachine.AddAnyTransition(safe,  () => inSafeZone);
+        _stateMachine.AddAnyTransition(safe,  () => inSafeZone && !inHomeZone);
         _stateMachine.AddAnyTransition(combat,  () => !inSafeZone);
         _stateMachine.SetState(safe);
     }
@@ -70,6 +72,12 @@ public class Player : Entity
     }
 
     private void OnTriggerStay(Collider other)
+    {
+        if(other.CompareTag("SafeZone"))
+            inSafeZone = true;
+    }
+
+    private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("SafeZone"))
             inSafeZone = true;
