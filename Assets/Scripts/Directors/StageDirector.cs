@@ -40,13 +40,7 @@ public class StageDirector : Director
 
     void Init()
     {
-        InfinateTerrain.OnMapUpdated += GenerateNavMesh;
-        Player = GameObject.Find("Player").GetComponent<Player>();
-        Instance = this;
-        var MapGenerator = GetComponent<InfinateTerrain>();
-        if(MapGenerator)
-            MapGenerator.Init();
-        _combatDirectors = GetDirectors();
+        
     }
 
     Director[] GetDirectors()

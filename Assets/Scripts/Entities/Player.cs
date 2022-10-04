@@ -36,7 +36,7 @@ public class Player : Entity
     // Update is called once per frame
     void Update()
     {
-        _stateMachine.Tick();
+        //_stateMachine.Tick();
         if (castRefference.action.WasReleasedThisFrame())
             _moveProvider.moveSpeed = 5;
     }
