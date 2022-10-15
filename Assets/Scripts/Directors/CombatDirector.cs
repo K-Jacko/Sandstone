@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -6,19 +7,31 @@ using Unity.AI.Navigation;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class CombatDirector : Director
+public class CombatDirector : MonoBehaviour
 {
     public enum CombatDirectorType{Instant,Fast,Slow}
     public CombatDirectorType combatDirectorType;
     public float spawnRadius = 5f;
-    
-    private MobCard[] _validMobs;
-    private Entity _player;
+    [SerializeField]
+    private MobCard[] mobCards;
+    private GameObject _player;
     private Vector2 viewerPositionOld;
-
-    public override void Init()
+    private float wallet;
+    private int nameInt;
+    
+    public void Init(CombatDirectorType combatDirectorType)
     {
-        _validMobs = ValidateMobCards(StageDirector.Instance.monsters);
+        //Get all mobs spawnable on this map //Use Dictionary and strings to make array of possible spawns on this map
+        //Pick target //Use data on mob to decide how far to spawn
+        //Start at 0 credits
+        //Start counter  //Set interval for  in Wave and out Wave
+        //Start wave(SpawnLoop) after interval hits 0
+        //SpawnLoop = Check mobCap, if Last spawn was a success use its data(MobCard not Tier) else, PickCard, PickTier(Must be able to afford Cards Elite Tier (Compare Tier modifier ect *6)), CountSpawns, setup mob values, setup rewards, Spawn, On success store spawndata
+        
+        
+        
+        //Credits per second = creditMultiplier * (1 + 0.4 * coeff) * (playerCount + 1) / 2
+        //_validMobs = ValidateMobCards(StageDirector.Instance.monsters);
         _player = StageDirector.Instance.Player;
         switch (combatDirectorType)
         {
@@ -32,6 +45,18 @@ public class CombatDirector : Director
                 TimeManager.OnMinDoubleChanged += Tick;
                 break;
         }
+
+        wallet = StageDirector.Instance.wallet;
+        LoadResources();
+    }
+    
+    void LoadResources()
+    {
+        //Most expensive at 0index
+        //Use BNF Grammar in future. GemElements get decided here too
+        mobCards = Resources.LoadAll<MobCard>("MobCards");
+        Array.Sort(mobCards,
+            delegate(MobCard x, MobCard y) { return x.creditCost.CompareTo(y.creditCost); });
     }
 
     void Tick()
@@ -40,27 +65,31 @@ public class CombatDirector : Director
         //{
             //This fires off event that all the spawners are subbed too. 
             //This will spawn from the lowest priced and expend its wallet. Implement weights so harder enemies are prioritised with bigger wallets
+            nameInt = 0;
             var oldWallet = wallet;
-            for (var i = 0; i < _validMobs.Length; i++)
+            for (var i = 0; i < mobCards.Length; i++)
             {
-                var mobCard = _validMobs[i];
+                var mobCard = mobCards[i];
                 if (wallet >= mobCard.creditCost)
                 {
                     SpawnMob(mobCard);
                 }
-                else if (wallet > 0f && wallet < 5)
+                else if (wallet > 0f && wallet < mobCards[0].creditCost)
                 {
                     i = -1;
                 }
-                else if (wallet == 0 || wallet == 5)
+                
+                if (wallet == 0 || wallet == 5)
                 {
-                    wallet += (oldWallet * creditMultiplier) + StageDirector.Instance.coEef;
+                    wallet += (StageDirector.Instance.wallet * (int)StageDirector.Instance.coEef);//+ StageDirector.Instance.coEef;
                     break;
                 }
-            
+
+                nameInt++;
+
             }
 
-            StageDirector.Instance.GenerateNavMesh();
+            //StageDirector.Instance.GenerateNavMesh();
         //}
         
     }
@@ -69,39 +98,29 @@ public class CombatDirector : Director
     {
         wallet -= mobCard.creditCost;
 
-        var go = Instantiate(mobCard.entity,
-            _player.transform.position + new Vector3(Random.Range(-spawnRadius, spawnRadius),
-                Random.Range(-spawnRadius, spawnRadius), Random.Range(-spawnRadius, spawnRadius)),
-            Quaternion.identity);
-        var monsterScript = go.GetComponent<Monster>();
+        // var go = Instantiate(mobCard.entity,
+        //     _player.transform.position + new Vector3(Random.Range(-spawnRadius, spawnRadius),
+        //         Random.Range(-spawnRadius, spawnRadius), Random.Range(-spawnRadius, spawnRadius)),
+        //     Quaternion.identity);
+        // var monsterScript = go.GetComponent<Monster>();
 
-        monsterScript.GemElement = mobCard.GemElement;
-        monsterScript.gameObject.GetComponentInChildren<MeshRenderer>().material = mobCard.mobMaterial;
+        //monsterScript.GemElement = mobCard.GemElement;
+        // monsterScript.gameObject.GetComponentInChildren<MeshRenderer>().material = mobCard.mobMaterial;
+        //
+        // monsterScript.ability = mobCard.ability;
+        //
+        // // monsterScript.Stamina = mobCard.Stamina;
+        // // monsterScript.Agility = mobCard.Agility;
+        // // monsterScript.Focus = mobCard.Focus;
+        // // monsterScript.Power = mobCard.Power;
+        //
+        // monsterScript.Init();
+        // go.transform.parent = transform;
+        // go.name = mobCard.name + nameInt;
+        //TODO The monster script needs to call new stats and use them values
 
-        monsterScript.ability = mobCard.ability;
-        
-        monsterScript.Stamina = mobCard.Stamina;
-        monsterScript.Agility = mobCard.Agility;
-        monsterScript.Focus = mobCard.Focus;
-        monsterScript.Power = mobCard.Power;
-        monsterScript.Init();
-        go.transform.parent = transform;
-        
     }
 
-    
-    
-    MobCard[] ValidateMobCards(MobCard[] mobCards)
-    {
-        foreach (var mob in mobCards)
-        {
-            //Validate VS Table from stage Director. Use BNF Grammar in future. GemElements get decided here too
-            Debug.Log($"{mobCards[0]}" + "is Valid");
-        }
-
-        return mobCards;
-    }
-    
     private void OnDisable()
     {
         TimeManager.OnMinChanged -= Tick;

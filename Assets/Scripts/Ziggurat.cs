@@ -15,7 +15,7 @@ public class Ziggurat : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = StageDirector.Instance.Player.gameObject;
+        //player = StageDirector.Instance.Player.gameObject;
         
     }
 

@@ -8,17 +8,18 @@ public class SceneDirector : MonoBehaviour
     public static SceneDirector Instance { get; private set; }
     
     public event Action OnLoadingStart;
-    
+    private Scene activeScene;
     private void Start()
     {
         Instance = this;
-        var launchSystem = GameObject.Find("LaunchSystem").GetComponent<LaunchSystem>();
+        var launchSystem = gameObject.AddComponent<LaunchSystem>();
         launchSystem.Init();
     }
     
     public void LoadScene(String name, Action callback = null)
     {
         SceneManager.LoadScene(name,LoadSceneMode.Additive);
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName(name));
         callback?.Invoke();
     }
 

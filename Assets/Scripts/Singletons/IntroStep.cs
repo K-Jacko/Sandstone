@@ -6,23 +6,19 @@ using UnityEngine.SceneManagement;
 
 public class IntroStep : MonoBehaviour, ILaunchStep
 {
-    
-    public bool SoftenHorizontalFollow;
-    public bool Introbool;
+    //Splash
     public event Action OnIntroComplete;
     
     private bool isLerpingCanvas;
     private Vector3 lerpVelocity;
+    private bool SoftenHorizontalFollow;
 
 
     public event Action onComplete;
 
     public void Init()
     {
-        LoadIntroScene(() =>
-        {
-            onComplete?.Invoke();
-        });
+        LoadIntroScene(null);
     }
 
     public void DeInit()
@@ -35,14 +31,19 @@ public class IntroStep : MonoBehaviour, ILaunchStep
     {
         throw new NotImplementedException();
     }
+    
+    [InspectorButton]
+    public void EnterStage()
+    {
+        SceneDirector.Instance.LoadLoading("Menu",SceneDirector.Instance.UnloadLoading);
+        onComplete?.Invoke();
+    }
 
     private void Update()
     {
-        LerpToEye();
-        if (Introbool)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            SceneDirector.Instance.LoadLoading("Menu",SceneDirector.Instance.UnloadLoading);
-            Introbool = false;
+            EnterStage();
         }
     }
 

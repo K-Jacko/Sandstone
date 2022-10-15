@@ -11,12 +11,13 @@ public class LaunchSystem : MonoBehaviour
     public static LaunchSystem Instance { get; private set; }
     private readonly Dictionary<string, Type> allLaunchSteps = new Dictionary<string, Type>();
     private readonly IList<ILaunchStep> launchSteps = new List<ILaunchStep>();
-    private int index = 0;
+    private int index;
     private Stopwatch stopwatch;
 
     public void Init()
     {
         Instance = this;
+        index = 0;
         allLaunchSteps.Add("SplashIntro", typeof(IntroStep));
         
         var tempSchema = GetSchema(new CoreSchema());
@@ -30,7 +31,6 @@ public class LaunchSystem : MonoBehaviour
         //Grab Schema from text file later to be able to control launch sequence remotely
         Array.Resize(ref data.schema,1);
         data.schema[0] = new string("SplashIntro");
-        
         return data;
     }
 

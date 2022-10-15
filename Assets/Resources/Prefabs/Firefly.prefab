@@ -136,9 +136,10 @@ MonoBehaviour:
   Focus: 0
   Agility: 3
   Power: 0
+  ability: {fileID: 11400000, guid: 95454454981b8c249a83f7bcabfe0aa5, type: 2}
   isCasting: 0
   castRefference:
-    m_UseReference: 0
+    m_UseReference: 1
     m_Action:
       m_Name: Cast Refference
       m_Type: 0
@@ -148,10 +149,11 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: 0}
+    m_Reference: {fileID: -5947764987783424762, guid: 5a72404c45ac07b42a903f45115203a8, type: 3}
   ManaPool: 0
   combatRadius: 11.16
   player: {fileID: 0}
+  mobCard: {fileID: 11400000, guid: d1f78406f04f6a147a65068d58d1597d, type: 2}
   material: {fileID: 2100000, guid: cc25497e7f860d745bf4ddc0c37b7458, type: 2}
   traverseType: 2
   explosionRadius: 3
@@ -159,7 +161,6 @@ MonoBehaviour:
   shootInterval: 1
   projectileSpeed: 3.79
   projectile: {fileID: 6151806324538758977, guid: 186cae12afb2b804a8c3e3598ed5d9be, type: 3}
-  ability: {fileID: 11400000, guid: 95454454981b8c249a83f7bcabfe0aa5, type: 2}
 --- !u!33 &5283921981542637010
 MeshFilter:
   m_ObjectHideFlags: 0

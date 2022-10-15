@@ -36,14 +36,14 @@ public class TimeManager : MonoBehaviour
         {
             Minute = 0;
             OnMinDoubleChanged?.Invoke();
-            StageDirector.Instance.coEef += 10f;
+            //StageDirector.Instance.coEef += 10f;
         }
         
         if (timer <= 0)
         {
             Minute++;
             OnMinChanged?.Invoke();
-            StageDirector.Instance.coEef += 5f;
+            //StageDirector.Instance.coEef += 5f;
             if (Minute >= 60)
             {
                 

@@ -32,14 +32,14 @@ public class Firefly : Monster
 
     public override void InitAttackStates()
     {
-        base.InitAttackStates();
-        var explode = new Explode(this,material);
-        
-        this._stateMachine.AddAnyTransition(explode, () =>
-        {
-            var distance = Vector3.Distance(transform.position, player.transform.position);
-            return distance <= explosionRadius;
-        });
+        // base.InitAttackStates();
+        // var explode = new Explode(this,material);
+        //
+        // this._stateMachine.AddAnyTransition(explode, () =>
+        // {
+        //     var distance = Vector3.Distance(transform.position, player.transform.position);
+        //     return distance <= explosionRadius;
+        // });
     }
     
     private void Update() => _stateMachine.Tick();

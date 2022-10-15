@@ -48,9 +48,9 @@ public class Grid<TGridObject>
             }
         }
         //TODO : Draw outer Rim
-        // Debug.DrawLine(GetWorldPosition((int)originPosition.x,(int)originPosition.y + _height), GetWorldPosition((int)originPosition.x + _width, (int)originPosition.y + _height),Color.red,100f);
-        // Debug.DrawLine(GetWorldPosition((int)originPosition.x + _width, (int)originPosition.y ), GetWorldPosition((int)originPosition.x + _width, (int)originPosition.y + _height),Color.red,100f);
-        // Debug.DrawLine(GetWorldPosition((int)originPosition.x,(int)originPosition.y - _height) , GetWorldPosition((int)originPosition.x + _width, (int)originPosition.y ),Color.red,100f);
+         Debug.DrawLine(GetWorldPosition((int)originPosition.x,(int)originPosition.y + _height), GetWorldPosition((int)originPosition.x + _width, (int)originPosition.y + _height),color,100f);
+         Debug.DrawLine(GetWorldPosition((int)originPosition.x + _width, (int)originPosition.y ), GetWorldPosition((int)originPosition.x + _width, (int)originPosition.y + _height),color,100f);
+         //Debug.DrawLine(GetWorldPosition((int)originPosition.x,(int)originPosition.y - _height) , GetWorldPosition((int)originPosition.x + _width, (int)originPosition.y ),Color.red,100f);
         
     }
 

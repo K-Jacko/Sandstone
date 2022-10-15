@@ -54,6 +54,7 @@ public class Entity : MonoBehaviour
       //Make primative from power and suffix. 
       //project primative using physics and power
       //Minus health from entity
+      //Needs to shoot from an origin
       ManaPool -= spell.manaCost;
       var go = GameObject.CreatePrimitive(spell.suffix);
       go.AddComponent<Projectile>();

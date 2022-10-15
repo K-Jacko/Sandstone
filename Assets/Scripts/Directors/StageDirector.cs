@@ -1,113 +1,69 @@
-using System;
+
+using System.Collections;
 using System.Collections.Generic;
-using Unity.AI.Navigation;
+using System.IO;
+using System.Runtime.CompilerServices;
 using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.AI;
-using Quaternion = UnityEngine.Quaternion;
 using Random = UnityEngine.Random;
-using Vector3 = UnityEngine.Vector3;
 
-public class StageDirector : Director
+public class StageDirector : MonoBehaviour
 {
-    public Entity Player { get; private set; }
     public static StageDirector Instance { get; private set; }
-    public float coEef;
-    public bool debugGrid;
-    public GameObject shrine;
-    public float shrineSpawnRadius;
+    public GameObject Player;
+
     public int gridSize;
-    public List<GameObject> safeZones;
-    public GameObject[] shrines;
+    public int cellSize;
+    
+    public int wallet;
+    public float coEef = 1;
+    public float markerRadius;
 
-    private Director[] _combatDirectors;
-    private Pathfinding _pathfinding;
-    public NavMeshSurface navMesh;
+    private MarkerGenerator markerGenerator;
 
-    // Start is called before the first frame update
-    //Use Task action to make sure Everything load is right order
-    public override void Awake()
+    // This wil be a script to spawn all the interactables and objectives on the map 
+    // This will use a wallet with a set ammount to do so 
+    // This will spawn these objectives via scriptable objects
+    // This will happen while player is in load 
+    // This will go in sequence along all cells on grid and take from the list of raycastYFloats 
+    void Start()
     {
-        //Task action init
-        base.Awake();
-        LoadMonsters();
-        Init();
-        GenerateShrines(4);
-        GeneratePaths(shrines);
-        LoadZiggurat();
+        Instance = this;
+        GenerateMarkers();
+        GenerateNewProps();
+        GenerateCombatDirector();
     }
 
-    void Init()
+    void GenerateMarkers()
     {
+        markerGenerator = gameObject.AddComponent<MarkerGenerator>();
+        markerGenerator.Init(gridSize,cellSize);
         
     }
 
-    Director[] GetDirectors()
+    void GenerateNewProps()
     {
-        var combatDirectors = FindObjectsOfType<Director>();
-        foreach (var combatDirector in combatDirectors)
+        var propGenerator = gameObject.AddComponent<PropGenerator>();
+        
+        for (int i = 0; i < gridSize * coEef; i++)
         {
-            combatDirector.Init();
+            propGenerator.GeneratePropOnGrid(markerGenerator.SpawnNodeGrid().GetGridObject(markerGenerator.RaycastLocations()[Random.Range(0, markerGenerator.RaycastLocations().Length)]), wallet,markerRadius);
         }
+    }
 
-        return combatDirectors;
-    }
-    void GenerateShrines(int noShrines)
-    {
-        var origin = new Vector3(0, 0, 0);
-        shrines = new GameObject[noShrines];
-        for (int i = 0; i < noShrines; i++)
-        {
-            var go = Instantiate(shrine, origin + new Vector3(Random.Range(-shrineSpawnRadius, shrineSpawnRadius),0,Random.Range(-shrineSpawnRadius, shrineSpawnRadius)), Quaternion.identity);
-            shrines[i] = go;
-        }
-    }
-    void GeneratePaths(GameObject[] _shrines)
-    {
-        for (int i = 0; i < _shrines.Length; i++)
-        {
-            _pathfinding = new Pathfinding(gridSize, gridSize, debugGrid);
-            
-            List<Vector3> path = _pathfinding.FindPath(new Vector3(0,0,0), _shrines[i].transform.position);
-            if (path != null)
-            {
-                for (int j = 0; j < path.Count - 1; j++)
-                {
-                    Debug.DrawLine(path[j] +  _pathfinding.GetGrid().GetOffset() + new Vector3(0,50,0),path[j+1] +  _pathfinding.GetGrid().GetOffset() + new Vector3(0,50,0),Color.red, 100f);
-                }
-            }
-        }
-    }
-    void LoadZiggurat()
-    {
-        var zig = Resources.Load("Prefabs/Ziggurat");
-        Instantiate(zig, new Vector3(0,200,0), quaternion.identity);
-        safeZones.Add(zig.GameObject());
-    }
     
-    public void GenerateNavMesh()
-    {
-        if (!navMesh)
-        {
-            navMesh = gameObject.AddComponent<NavMeshSurface>();
-            int layerMask = 1 << 6;
-            navMesh.layerMask = layerMask;
-            navMesh.collectObjects = CollectObjects.Volume;
-            navMesh.size = new Vector3(300, 100, 300);
-            navMesh.center = Player.transform.position;
-            navMesh.BuildNavMesh();
-        }
-        else
-        {
-            navMesh.center = Player.transform.position;
-            navMesh.UpdateNavMesh(navMesh.navMeshData);
-        }
 
+    private void GenerateCombatDirector()
+    {
+        var combatDirector = gameObject.AddComponent<CombatDirector>();
+        combatDirector.Init(CombatDirector.CombatDirectorType.Fast);
     }
 
-    private void OnDisable()
-    {
-        TimeManager.OnMinChanged -= GenerateNavMesh;
-    }
+    // private void OnDrawGizmosSelected()
+    // {
+    //     for (int i = 0; i < raycastLocations.Length; i++)
+    //     {
+    //         Gizmos.DrawWireSphere(raycastLocations[i],markerRadius);
+    //     }
+    // }
 }
