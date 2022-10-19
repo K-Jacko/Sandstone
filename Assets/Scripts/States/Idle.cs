@@ -12,19 +12,17 @@ public class Idle : IState
 
     public void Tick()
     {
-        _entity.Idle();
+        
     }
 
-    public Idle(Monster entity, Material material, GameObject player)
+    public Idle()
     {
-        _entity = entity;
-        _entitymMaterial = material;
-        _player = player;
+        
     }
 
     public void OnEnter()
     {
-        _entitymMaterial.color = _color;
+        
     }
 
     public void OnExit()

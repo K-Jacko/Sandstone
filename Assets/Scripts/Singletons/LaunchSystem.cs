@@ -18,7 +18,9 @@ public class LaunchSystem : MonoBehaviour
     {
         Instance = this;
         index = 0;
-        allLaunchSteps.Add("SplashIntro", typeof(IntroStep));
+        allLaunchSteps.Add("SplashStep", typeof(SplashStep));
+        allLaunchSteps.Add("MenuStep", typeof(MenuStep));
+        
         
         var tempSchema = GetSchema(new CoreSchema());
         LoadSchema(tempSchema);
@@ -29,16 +31,18 @@ public class LaunchSystem : MonoBehaviour
     CoreSchema GetSchema(CoreSchema data)
     {
         //Grab Schema from text file later to be able to control launch sequence remotely
-        Array.Resize(ref data.schema,1);
-        data.schema[0] = new string("SplashIntro");
+        var sizeOfSchema = 2;
+        Array.Resize(ref data.schema,sizeOfSchema);
+        data.schema[0] = new string("SplashStep");
+        data.schema[1] = new string("MenuStep");
         return data;
     }
 
     void LoadSchema(CoreSchema data)
     {
-        foreach (string stage in data.schema)
+        foreach (string key in data.schema)
         {
-            var launchStep = (ILaunchStep)gameObject.AddComponent(allLaunchSteps["SplashIntro"]);
+            var launchStep = (ILaunchStep)gameObject.AddComponent(allLaunchSteps[key]);
             if(!launchSteps.Contains(launchStep))
                 launchSteps.Add(launchStep);
         }

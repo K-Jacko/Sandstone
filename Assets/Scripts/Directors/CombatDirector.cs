@@ -1,25 +1,55 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using TMPro;
 using Unity.Mathematics;
 using Unity.AI.Navigation;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 using Random = UnityEngine.Random;
 
+public struct SpawnData
+{
+    public bool isSuccessful;
+    public Vector2 waveTimer;
+    public GameObject target;
+    public MobCard mobCard;
+    public int mobTier;
+    public int TierModifier;
+}
 public class CombatDirector : MonoBehaviour
 {
     public enum CombatDirectorType{Instant,Fast,Slow}
     public CombatDirectorType combatDirectorType;
-    public float spawnRadius = 5f;
-    [SerializeField]
-    private MobCard[] mobCards;
-    private GameObject _player;
-    private Vector2 viewerPositionOld;
-    private float wallet;
+    public int wallet;
+    public SpawnData spawnData;
+
+    private Transform mobCollection;
+    private StateMachine stateMachine;
+    public MobCard[] mobCards;
     private int nameInt;
+    //public MobTier[] mobTiers;
+    public float[] prob;
+    private int numOfTiers = 3;
+
+    private float[] TierWeights;
+    private float startMinTier = 0;
+    private float startMaxTier = 1;
+    private float startPeakTier = 2;
+
+    private float endMinTier = 1;
+    private float endMaxTier = 3;
+    private float endPeakTier = 2;
+    private float maxWeight = 10;
+
+    public float minT;
+    public float maxT;
+    public float peakT;
+    public float Weight;
     
-    public void Init(CombatDirectorType combatDirectorType)
+    public void Init()
     {
         //Get all mobs spawnable on this map //Use Dictionary and strings to make array of possible spawns on this map
         //Pick target //Use data on mob to decide how far to spawn
@@ -27,103 +57,164 @@ public class CombatDirector : MonoBehaviour
         //Start counter  //Set interval for  in Wave and out Wave
         //Start wave(SpawnLoop) after interval hits 0
         //SpawnLoop = Check mobCap, if Last spawn was a success use its data(MobCard not Tier) else, PickCard, PickTier(Must be able to afford Cards Elite Tier (Compare Tier modifier ect *6)), CountSpawns, setup mob values, setup rewards, Spawn, On success store spawndata
-        
-        
+        LoadSpawnableMobs();
+        wallet = 0;
+        gameObject.AddComponent<CreditGenerator>();
+        prob = new float[numOfTiers];
+        TierWeights = new float[numOfTiers];
+        spawnData = new SpawnData();
+        if (!spawnData.isSuccessful)
+        {
+            spawnData = SetupNewSpawnData();
+        }
+        StateMachine();
         
         //Credits per second = creditMultiplier * (1 + 0.4 * coeff) * (playerCount + 1) / 2
         //_validMobs = ValidateMobCards(StageDirector.Instance.monsters);
-        _player = StageDirector.Instance.Player;
-        switch (combatDirectorType)
-        {
-            case CombatDirectorType.Fast :
-                TimeManager.OnMinChanged += Tick;
-                break;
-            case CombatDirectorType.Instant:
-                Tick();
-                break;
-            case CombatDirectorType.Slow :
-                TimeManager.OnMinDoubleChanged += Tick;
-                break;
-        }
-
-        wallet = StageDirector.Instance.wallet;
-        LoadResources();
+        
+        // switch (combatDirectorType)
+        // {
+        //     case CombatDirectorType.Fast :
+        //         TimeManager.OnMinChanged += Tick;
+        //         break;
+        //     case CombatDirectorType.Instant:
+        //         Tick();
+        //         break;
+        //     case CombatDirectorType.Slow :
+        //         TimeManager.OnMinDoubleChanged += Tick;
+        //         break;
+        // }
+        //
+        // wallet = StageDirector.Instance.wallet;
+        // LoadResources();
     }
+
     
-    void LoadResources()
+
+    void LoadSpawnableMobs()
     {
         //Most expensive at 0index
-        //Use BNF Grammar in future. GemElements get decided here too
-        mobCards = Resources.LoadAll<MobCard>("MobCards");
-        Array.Sort(mobCards,
-            delegate(MobCard x, MobCard y) { return x.creditCost.CompareTo(y.creditCost); });
-    }
+        var validMobs = SceneDirector.Instance.currentMapData.validMobs;
+        var mcList = new List<MobCard>();
+        for (int i = 0; i < validMobs.Length; i++)
+        {
+            var mobCard = Resources.Load<MobCard>("MobCards/" + $"{validMobs[i]}");
+            mcList.Add(mobCard);
+        }
+        mobCards = mcList.ToArray();
+        if (mobCards.Length > 1)
+        {
+            Array.Sort(mobCards,
+                delegate(MobCard x, MobCard y) { return x.creditCost.CompareTo(y.creditCost); });
+        }
+        
 
-    void Tick()
-    {
-        //if (_player.playerState == Player.PlayerState.Combat)
-        //{
-            //This fires off event that all the spawners are subbed too. 
-            //This will spawn from the lowest priced and expend its wallet. Implement weights so harder enemies are prioritised with bigger wallets
-            nameInt = 0;
-            var oldWallet = wallet;
-            for (var i = 0; i < mobCards.Length; i++)
-            {
-                var mobCard = mobCards[i];
-                if (wallet >= mobCard.creditCost)
-                {
-                    SpawnMob(mobCard);
-                }
-                else if (wallet > 0f && wallet < mobCards[0].creditCost)
-                {
-                    i = -1;
-                }
-                
-                if (wallet == 0 || wallet == 5)
-                {
-                    wallet += (StageDirector.Instance.wallet * (int)StageDirector.Instance.coEef);//+ StageDirector.Instance.coEef;
-                    break;
-                }
-
-                nameInt++;
-
-            }
-
-            //StageDirector.Instance.GenerateNavMesh();
-        //}
+        //End up with An array of MobCards so i can use their strings to load Prefabs later in the loop 
+        //Some will not be able to spawn cus to expensive but thats okay, add them to the list anyway. 
+        //5 spawnable enemies each level 
+        //1-2 spawnable bosses
         
     }
 
-    void SpawnMob(MobCard mobCard)
+    public SpawnData SetupNewSpawnData()
     {
-        wallet -= mobCard.creditCost;
+        var spawnData = new SpawnData();
+        spawnData.target = StageDirector.Instance.friendlyEntities[Random.Range(0, StageDirector.Instance.friendlyEntities.Count)]
+            .gameObject;
+        spawnData.waveTimer = new Vector2(Random.Range(4.5f,9), Random.Range(0.1f, 1));
+        spawnData.mobCard = PickMobCard();
+        spawnData.mobTier = PickMobTier();
+        return spawnData;
+    }
 
-        // var go = Instantiate(mobCard.entity,
-        //     _player.transform.position + new Vector3(Random.Range(-spawnRadius, spawnRadius),
-        //         Random.Range(-spawnRadius, spawnRadius), Random.Range(-spawnRadius, spawnRadius)),
-        //     Quaternion.identity);
-        // var monsterScript = go.GetComponent<Monster>();
+    public MobCard PickMobCard()
+    {
+        while (true)
+        {
+            //pick one at random 
+            //check price to wallet
+            //check if too cheap
+            var mc = mobCards[Random.Range(0, mobCards.Length)];
+            return mc;
+            
+        }
+    }
 
-        //monsterScript.GemElement = mobCard.GemElement;
-        // monsterScript.gameObject.GetComponentInChildren<MeshRenderer>().material = mobCard.mobMaterial;
-        //
-        // monsterScript.ability = mobCard.ability;
-        //
-        // // monsterScript.Stamina = mobCard.Stamina;
-        // // monsterScript.Agility = mobCard.Agility;
-        // // monsterScript.Focus = mobCard.Focus;
-        // // monsterScript.Power = mobCard.Power;
-        //
-        // monsterScript.Init();
-        // go.transform.parent = transform;
-        // go.name = mobCard.name + nameInt;
-        //TODO The monster script needs to call new stats and use them values
+    public void Probability()
+    {
+        var time = (float)SceneDirector.Instance.TimeInGame.Elapsed.TotalSeconds;
+        minT += 10 * ((endMinTier - startMinTier) / (time * 2 ));
+        maxT += 10 * ((endMaxTier - startMaxTier) / (time * 2));
+        peakT += 10 * ((endPeakTier - startPeakTier) / (time * 2));
+
+
+        for (int T = 0; T < numOfTiers; T++)
+        {
+            if (T < minT)
+                Weight = 0;
+            if (T > maxT)
+                Weight = 0;
+            if (minT <= T & T < peakT)
+            {
+                Weight = 1 + (maxWeight - 1) / (peakT - minT) * (T - minT);
+            }
+
+            if (peakT <= T & T < maxT)
+            {
+                Weight = 1 + (maxWeight - 1) / (peakT - maxT) * (T - maxT);
+            }
+
+            TierWeights[T] = Weight;
+            prob[T] = Weight / TierWeights.Sum();
+        }
+    }
+
+    public int PickMobTier()
+    {
+        var p = Random.Range(0f, 1f);
+        float sumProb = 0;
+        for (int i = 0; i < numOfTiers; i++)
+        {
+            sumProb += prob[i];
+            if (sumProb >= p)
+            {
+                return i;
+            }
+        }
+
+        return 0;
+    }
+
+    void StateMachine()
+    {
+        var timer = new Stopwatch();
+        timer.Start();
+        stateMachine = new StateMachine();
+        var outWave = new OutWave(spawnData,timer,this);
+        var inWave = new InWave(spawnData,this, stateMachine, outWave);
+        stateMachine.SetState(outWave);
+
+        stateMachine.AddAnyTransition(inWave,WaveCooldown());
+
+        Func<bool> WaveCooldown() => () => (timer.Elapsed.Seconds >= spawnData.waveTimer.x);
 
     }
 
-    private void OnDisable()
+    void Update()
     {
-        TimeManager.OnMinChanged -= Tick;
-        TimeManager.OnMinDoubleChanged -= Tick;
+        stateMachine.Tick();
     }
+
+    public Transform CollectionTransform()
+    {
+        if (!mobCollection)
+        {
+            mobCollection = new GameObject().transform;
+            mobCollection.name = "Mobs";
+            return mobCollection.transform;
+        }
+
+        return mobCollection;
+    }
+    
 }

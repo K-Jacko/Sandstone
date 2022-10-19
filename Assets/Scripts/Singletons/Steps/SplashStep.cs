@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class IntroStep : MonoBehaviour, ILaunchStep
+public class SplashStep : MonoBehaviour, ILaunchStep
 {
     //Splash
     public event Action OnIntroComplete;
@@ -18,7 +18,8 @@ public class IntroStep : MonoBehaviour, ILaunchStep
 
     public void Init()
     {
-        LoadIntroScene(null);
+        SceneDirector.Instance.LoadWithLoadingScene("Intro", null);
+        StartCoroutine(SplashVisual());
     }
 
     public void DeInit()
@@ -31,20 +32,11 @@ public class IntroStep : MonoBehaviour, ILaunchStep
     {
         throw new NotImplementedException();
     }
-    
-    [InspectorButton]
-    public void EnterStage()
-    {
-        SceneDirector.Instance.LoadLoading("Menu",SceneDirector.Instance.UnloadLoading);
-        onComplete?.Invoke();
-    }
 
-    private void Update()
+    IEnumerator SplashVisual()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            EnterStage();
-        }
+        yield return new WaitForSeconds(3);
+        onComplete?.Invoke();
     }
 
     void LerpToEye()
@@ -76,14 +68,5 @@ public class IntroStep : MonoBehaviour, ILaunchStep
             isLerpingCanvas = false;
         }
     }
-
-    void LoadIntroScene(Action callback)
-    {
-        SceneDirector.Instance.LoadScene("intro");
-        callback?.Invoke();
-    }
-    void UnloadScene()
-    {
-        
-    }
+    
 }

@@ -279,6 +279,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93c6d11f6fdd4da469b0a2c8f10fdcf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Player: {fileID: 0}
+  coEef: 1
 --- !u!1001 &531660858121369539
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -300,7 +302,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 531660857025627989, guid: da776f93dead52d45b195636b7a59b80, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -2.51
       objectReference: {fileID: 0}
     - target: {fileID: 531660857025627989, guid: da776f93dead52d45b195636b7a59b80, type: 3}
       propertyPath: m_LocalPosition.z
@@ -358,6 +360,10 @@ PrefabInstance:
       propertyPath: m_InteractionManager
       value: 
       objectReference: {fileID: 3153030229157128578}
+    - target: {fileID: 3215859246205604593, guid: da776f93dead52d45b195636b7a59b80, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da776f93dead52d45b195636b7a59b80, type: 3}
 --- !u!114 &3153030228273392456

@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5229895577864363379}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.292, z: 0.328}
+  m_LocalPosition: {x: 0, y: 0, z: 0.381}
   m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -83,6 +83,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &7859975139958325019
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4201797930625651053}
+  m_Layer: 7
+  m_Name: AttackOrigin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4201797930625651053
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7859975139958325019}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.51}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3197493323340098654}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8599013494987535353
 GameObject:
   m_ObjectHideFlags: 0
@@ -98,8 +129,8 @@ GameObject:
   - component: {fileID: 953705783228287552}
   - component: {fileID: 6640357380930438441}
   - component: {fileID: 9092234109510936109}
-  m_Layer: 0
-  m_Name: Scarab
+  m_Layer: 7
+  m_Name: Scarab0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118,6 +149,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1252851874945499923}
+  - {fileID: 4201797930625651053}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -133,10 +165,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49726716ece6d344194bf9a8f7de0d52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Stamina: 0
-  Focus: 0
-  Agility: 0
-  Power: 0
   isCasting: 0
   castRefference:
     m_UseReference: 0
@@ -150,11 +178,14 @@ MonoBehaviour:
       m_SingletonActionBindings: []
       m_Flags: 0
     m_Reference: {fileID: 0}
+  castOrigin: {fileID: 4201797930625651053}
   ManaPool: 0
-  combatRadius: 6
-  player: {fileID: 0}
+  mobCard: {fileID: 11400000, guid: d6199089ff96e6c4daee82caf9019d02, type: 2}
   material: {fileID: 2100000, guid: cc25497e7f860d745bf4ddc0c37b7458, type: 2}
-  traverseType: 1
+  movementType: 0
+  combatRadius: 7
+  target: {fileID: 0}
+  agent: {fileID: 0}
   rotationSpeed: 4
   radius: 2
 --- !u!33 &6087499619567095723
@@ -247,7 +278,7 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 2
-  m_Acceleration: 8
+  m_Acceleration: 100
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 0

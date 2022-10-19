@@ -14,14 +14,15 @@ public class Projectile : MonoBehaviour
         if (other.gameObject.layer == 3)
         {
             gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            Destroy(gameObject,2f);
+            Debug.Log("pded");
+            Destroy(gameObject);
             onHitPlayer?.Invoke();
         }
-        else
+        else if (other.gameObject.layer != 3)
         {
-            Destroy(gameObject);
+            
+            Destroy(gameObject,10f);
         }
-
     }
 
     private void OnDrawGizmos()

@@ -7,93 +7,102 @@ using UnityEngine.AI;
 public class Monster : Entity
 {
     
-    public float combatRadius;
-    public GameObject player;
+    [Header("Stats/Card")]
     public MobCard mobCard;
-    
-    public GemElement GemElement;
+    [Header("Cosmetic")]
     public Material material;
 
-    public StateMachine _stateMachine;
+    [Header("Combat")] public MovementType movementType;
+    public float combatRadius;
+    public GameObject target;
+    public NavMeshAgent agent;
+    
+    
+    public StateMachine movementStateMachine;
+    public StateMachine combatStateMachine;
 
-
-    public enum TraverseType
+    public virtual void Init(SpawnData data)
     {
-        None,
-        Ground,
-        Air
-    };
-
-    public TraverseType traverseType;
-
-
-    public virtual void Init()
-    {
-        //material = gameObject.GetComponentInChildren<MeshRenderer>().material;
-        //player = StageDirector.Instance.Player.gameObject;
-        _stateMachine = new StateMachine();
+        ProcessStats();
+        target = data.target;
+        InitNaveMesh();
         InitAttackStates();
+    }
+
+    void ProcessStats()
+    {
+        mobCard.stats = new Stats(1, 1, 3, 10);
+        stats = mobCard.stats;
+        InitManaPool();
+    }
+    void InitManaPool()
+    {
+        if (SceneDirector.Instance)
+        {
+            ManaPool = stats.Focus * SceneDirector.Instance.coEef;
+        }
+        else
+        {
+            ManaPool = stats.Focus;
+        }
     }
     public void Spawn()
     {
-        int layerMask = 1 << 6;
-        RaycastHit hit;
-        if (traverseType == TraverseType.Air)
-        {
-            if (Physics.Raycast(transform.position + new Vector3(0,1000,0), Vector3.down, out hit,10000, layerMask))
-            {
-                transform.position = hit.point + new Vector3(0, 10, 0);
-            }
-        }
-        else if(traverseType == TraverseType.Ground)
-        {
-            if (Physics.Raycast(transform.position + new Vector3(0,1000,0), Vector3.down, out hit,10000, layerMask))
-            {
-                transform.position = hit.point;
-            }
-        }
         
+    }
+
+    public virtual void InitNaveMesh()
+    {
+        agent = gameObject.GetComponent<NavMeshAgent>();
     }
     public virtual void InitAttackStates()
     {
-        // var idle = new Idle(this,material,player.gameObject);
-        // var attack = new Attack(this,material,player.gameObject);
-        //
-        // At(attack, idle, PlayerInRange());
-        // At(idle, attack, PlayerNotInRange());
-        //
-        // _stateMachine.SetState(idle);
-        //
-        // void At(IState to, IState from, Func<bool> condition) => _stateMachine.AddTransition(to, from, condition);
-        //
-        // Func<bool> PlayerNotInRange() => () =>
-        // {
-        //     var distance = Vector3.Distance(transform.position, player.gameObject.transform.position);
-        //     return !(distance >= combatRadius);
-        // };
-        //
-        // Func<bool> PlayerInRange() => () =>
-        // {
-        //     var distance = Vector3.Distance(transform.position, player.transform.position);
-        //     return !(distance < combatRadius);
-        // };
-    }
-    
-    public virtual void Attack()
-    {
+
+        movementStateMachine = new StateMachine();
+        combatStateMachine = new StateMachine();
         
+        var persue = new Persue(this,target);
+        var avoid = new Avoid(this,target);
+        var idle = new Idle();
+        var attack = new Attack(this, target);
+        
+        movementStateMachine.AddAnyTransition(persue,PlayerNotInRange());
+        movementStateMachine.AddAnyTransition(avoid,PlayerInRange());
+        combatStateMachine.AddAnyTransition(idle,PlayerNotInRange());
+        combatStateMachine.AddAnyTransition(attack,PlayerInRange());
+        
+        movementStateMachine.SetState(persue);
+        combatStateMachine.SetState(idle);
+        
+        Func<bool> PlayerNotInRange() => () =>
+        {
+            var distance = Vector3.Distance(transform.position, target.gameObject.transform.position);
+            return (distance >= combatRadius);
+        };
+        //
+        Func<bool> PlayerInRange() => () =>
+        {
+            var distance = Vector3.Distance(transform.position, target.transform.position);
+            return (distance < combatRadius);
+        };
     }
-    
-    public virtual void Idle()
+
+    void Update()
     {
-        //MoveDirectly
-        transform.position = Vector3.MoveTowards(transform.position, player.transform.position, Time.deltaTime * Agility);
+        movementStateMachine.Tick();
+        combatStateMachine.Tick();
     }
     
     public void Kill()
     {
-        Destroy(gameObject);
+        
     }
+    
+    public enum MovementType
+    {
+        Flying,
+        Walking
+    };
     
     void OnDrawGizmos()
     {

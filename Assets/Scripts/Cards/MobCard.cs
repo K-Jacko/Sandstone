@@ -6,13 +6,12 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Card,", menuName = "Mob Card")]
 public class MobCard : ScriptableObject
 {
-    public enum MovementType {Flying, Walking}
+    
 
-    public MovementType movementType;
-    public new string name;
+    public Monster.MovementType movementType;
+    public string name;
+    public float spawnDistance;
     public int creditCost;
-    public float weight;
-    public Material mobMaterial;
     public Ability ability;
     public Stats stats;
 

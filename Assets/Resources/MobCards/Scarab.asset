@@ -12,14 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f7bc09731baadb43ab04acaf742fdc9, type: 3}
   m_Name: Scarab
   m_EditorClassIdentifier: 
-  movementType: 0
+  movementType: 1
   name: Scarab
-  entity: {fileID: 8599013494987535353, guid: 684f37bbc378e97479ec27a8052686c8, type: 3}
+  spawnDistance: 5
   creditCost: 10
-  weight: 2
-  mobMaterial: {fileID: 2100000, guid: b03790b0cf3d75f47bd9b4887dfbea8b, type: 2}
   ability: {fileID: 11400000, guid: f8902548f09e77a448f0406ee9502152, type: 2}
-  Stamina: 0
-  Power: 0
-  Agility: 3
-  Focus: 0

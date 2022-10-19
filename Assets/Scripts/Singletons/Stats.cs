@@ -11,12 +11,11 @@ public class Stats
     
     public GemElement GemElement; // TODO: refactor this. You need to think about what needs to change in mutations
 
-    public Stats(int stamina, int power, int agility, int focus, GemElement element)
+    public Stats(int stamina, int power, int agility, int focus)
     {
         this.Stamina = stamina;
         this.Power = power;
         this.Agility = agility;
         this.Focus = focus;
-        this.GemElement = element;
     }
 }

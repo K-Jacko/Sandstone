@@ -5,21 +5,22 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class StageDirector : MonoBehaviour
 {
     public static StageDirector Instance { get; private set; }
-    public GameObject Player;
+    public List<Entity> friendlyEntities;
 
     public int gridSize;
     public int cellSize;
     
     public int wallet;
-    public float coEef = 1;
+    
     public float markerRadius;
 
-    private MarkerGenerator markerGenerator;
+    public static MarkerGenerator markerGenerator { get; private set; }
 
     // This wil be a script to spawn all the interactables and objectives on the map 
     // This will use a wallet with a set ammount to do so 
@@ -29,41 +30,46 @@ public class StageDirector : MonoBehaviour
     void Start()
     {
         Instance = this;
+        HandleFriendlies();
         GenerateMarkers();
-        GenerateNewProps();
         GenerateCombatDirector();
+        //dd
+    }
+
+    void HandleFriendlies()
+    {
+        //TODO Sort friendly entities
+        friendlyEntities = new List<Entity>();
+        friendlyEntities.Add(SceneDirector.Instance.Player);
     }
 
     void GenerateMarkers()
     {
         markerGenerator = gameObject.AddComponent<MarkerGenerator>();
-        markerGenerator.Init(gridSize,cellSize);
-        
+        markerGenerator.Init(gridSize,cellSize,GenerateNewProps);
     }
 
     void GenerateNewProps()
     {
         var propGenerator = gameObject.AddComponent<PropGenerator>();
-        
-        for (int i = 0; i < gridSize * coEef; i++)
+
+        for (int i = 0; i < gridSize * (SceneDirector.Instance.coEef + 1) ; i++)
         {
             propGenerator.GeneratePropOnGrid(markerGenerator.SpawnNodeGrid().GetGridObject(markerGenerator.RaycastLocations()[Random.Range(0, markerGenerator.RaycastLocations().Length)]), wallet,markerRadius);
         }
     }
 
-    
-
     private void GenerateCombatDirector()
     {
         var combatDirector = gameObject.AddComponent<CombatDirector>();
-        combatDirector.Init(CombatDirector.CombatDirectorType.Fast);
+        combatDirector.Init();
     }
 
-    // private void OnDrawGizmosSelected()
-    // {
-    //     for (int i = 0; i < raycastLocations.Length; i++)
-    //     {
-    //         Gizmos.DrawWireSphere(raycastLocations[i],markerRadius);
-    //     }
-    // }
+    private void OnDrawGizmosSelected()
+    {
+        for (int i = 0; i < markerGenerator.RaycastLocations().Length; i++)
+        {
+            Gizmos.DrawWireSphere(markerGenerator.RaycastLocations()[i],markerRadius);
+        }
+    }
 }

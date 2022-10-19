@@ -69,7 +69,7 @@ public class PropGenerator : MonoBehaviour
                             firstSpent = propCards[i];
                             if(wallet >= firstSpent.creditCost)
                             {
-                                Debug.Log("CanAffordFirst");
+                                //Debug.Log("CanAffordFirst");
                                 i--;
                             }  
                             spent = false;
@@ -78,19 +78,19 @@ public class PropGenerator : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("No valid surfaces found");
+                        //Debug.Log("No valid surfaces found");
                     }
                 }
                 else
                 {
-                    Debug.Log("MissedRaycast" + $"{spawnNode.raycastLocation}");
+                    //Debug.Log("MissedRaycast" + $"{spawnNode.raycastLocation}");
                     i--;
                     continue;
                 }
             }
             else
             {
-                Debug.Log("Cannot Afford Prop");
+                //Debug.Log("Cannot Afford Prop");
             }
             
             if (wallet <= 0)
@@ -102,7 +102,7 @@ public class PropGenerator : MonoBehaviour
             {
                 if(wallet >= firstSpent.creditCost)
                 {
-                    Debug.Log("CanAffordFirst");
+                    //Debug.Log("CanAffordFirst");
                     ;
                 }
             }

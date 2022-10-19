@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.XR.Interaction.Toolkit;
 
 public class Player : Entity
@@ -20,11 +21,12 @@ public class Player : Entity
     void Start()
     {
         Projectile.onHitPlayer += Hit;
+        castRefference.action.performed += Sprint;
         _stateMachine = new StateMachine();
         InitAttackStates();
         Init();
-
-        castRefference.action.performed += Sprint;
+        
+        
         
     }
 
@@ -43,7 +45,7 @@ public class Player : Entity
 
     void Hit()
     {
-        Stamina -= 1;
+        //stats.Stamina -= 1;
     }
     
     void InitAttackStates()
@@ -61,7 +63,7 @@ public class Player : Entity
     {
         if(!_moveProvider) 
             _moveProvider = GetComponent<ActionBasedContinuousMoveProvider>();
-        _moveProvider.moveSpeed = Mathf.Lerp(_moveProvider.moveSpeed, _moveProvider.moveSpeed + Agility,2);
+        _moveProvider.moveSpeed = Mathf.Lerp(_moveProvider.moveSpeed, _moveProvider.moveSpeed + stats.Agility,2);
         
         Debug.Log("Sprinting");
     }
@@ -69,6 +71,7 @@ public class Player : Entity
     private void OnDisable()
     {
         Projectile.onHitPlayer -= Hit;
+        castRefference.action.performed -= Sprint;
     }
 
     private void OnTriggerStay(Collider other)

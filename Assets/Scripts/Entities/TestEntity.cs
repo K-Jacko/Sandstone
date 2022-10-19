@@ -15,28 +15,28 @@ public class TestEntity : Monster
     // Start is called before the first frame update
     void Awake()
     {
-        tempBool = 3;
-        GameObject o;
-        TEMaterial = (o = gameObject).GetComponent<MeshRenderer>().sharedMaterial;
-        _stateMachine = new StateMachine();
-
-
-        var enterColor = new Attack(this,TEMaterial,o);
-        var exitColor = new Cooldown(this,TEMaterial,o);
-        var idleColor = new Idle(this,TEMaterial,o);
-        
-        At(idleColor, enterColor, CloseToTarget());
-        _stateMachine.AddAnyTransition(enterColor, () => tempBool == 0);
-        At(enterColor, exitColor, AwayFromTarget());
-        At(exitColor, idleColor, ExitedAndAway());
-        
-        _stateMachine.SetState(idleColor);
-        
-        void At(IState to, IState from, Func<bool> condition) => _stateMachine.AddTransition(to, from, condition);
-        
-        Func<bool> CloseToTarget() => () => tempBool == 0;
-        Func<bool> AwayFromTarget() => () => tempBool == 1;
-        Func<bool> ExitedAndAway() => () => tempBool == 3;
+        // tempBool = 3;
+        // GameObject o;
+        // TEMaterial = (o = gameObject).GetComponent<MeshRenderer>().sharedMaterial;
+        // _stateMachine = new StateMachine();
+        //
+        //
+        // // var enterColor = new Attack(this,TEMaterial,o);
+        // // var exitColor = new Cooldown(this,TEMaterial,o);
+        // // var idleColor = new Idle(this,TEMaterial,o);
+        //
+        // At(idleColor, enterColor, CloseToTarget());
+        // _stateMachine.AddAnyTransition(enterColor, () => tempBool == 0);
+        // At(enterColor, exitColor, AwayFromTarget());
+        // At(exitColor, idleColor, ExitedAndAway());
+        //
+        // _stateMachine.SetState(idleColor);
+        //
+        // void At(IState to, IState from, Func<bool> condition) => _stateMachine.AddTransition(to, from, condition);
+        //
+        // Func<bool> CloseToTarget() => () => tempBool == 0;
+        // Func<bool> AwayFromTarget() => () => tempBool == 1;
+        // Func<bool> ExitedAndAway() => () => tempBool == 3;
 
 
     }

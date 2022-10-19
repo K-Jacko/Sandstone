@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileType: 0
   manaCost: 10
-  power: 3
+  power: 5
   suffix: 1
