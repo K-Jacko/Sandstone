@@ -14,7 +14,7 @@ This update reworks old system and expands on them to involve final features (va
 | Combat Director (Mutations)<br/>When spawning these mobs the Combat Director will have a chance to mutate the monster resulting in a stronger form of it being spawned instead |     <img src="Rda\2mutations.gif">     |
 |                             Combat Director (Weight)<br/>The combat director will have a greater chance to spawn mutations as the game progresses                              |     <img src="Rda\3weighted.gif">      |
 |         State Machines<br/>Although implemented previously they are being used properly now. Handling the movement type of enemies inside and outside of combat range          |   <img src="Rda\4StateMachines.gif">   |
-|              Prop Generator<br/>Using the old grid system we now have props randomly generating, using a weighted, wallet, credit system like our combat director              |       <img src="Rda\5props.png">       |
+|              Prop Generator<br/>Using the old grid system we now have props randomly generating, using a weighted, wallet, credit system like our combat director              |       <img src="Rda\5props.PNG">       |
 
 ### Honorable Mentions :
 1. NavMesh implementation
@@ -24,7 +24,7 @@ This update reworks old system and expands on them to involve final features (va
 
 ## Whats Next?
 Our test map and all the enemies and props look horrible! Next update ill do a quick art pass on all the assets i have now to bring the game to life a little.  
-<img src="Rda\populated.png">
+<img src="Rda\populated.PNG">
 I also want to focus on the players combat abilities and some first gem enchants. 
 
 
